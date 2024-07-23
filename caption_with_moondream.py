@@ -20,6 +20,11 @@ model.generation_config.pad_token_id = tokenizer.pad_token_id
 image_dir = "./images"
 image_files = os.listdir(image_dir)
 
+def save_metadata(metadata):
+    with open("metadata.jsonl", "w") as f:
+        for item in metadata:
+            json_line = json.dumps(item)
+            f.write(json_line + '\n')
 
 metadata = []
 
@@ -41,9 +46,7 @@ for index, image_file in enumerate(tqdm.tqdm(image_files)):
     })
 
     if index % 100 == 0:
-        # Save metadata to JSONL file
-        with open("metadata.jsonl", "w") as f:
-            json.dump(metadata, f)
+        save_metadata(metadata)
+        metadata = []
     
-with open("metadata.jsonl", "w") as f:
-    json.dump(metadata, f)
+save_metadata(metadata)
