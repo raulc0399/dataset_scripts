@@ -58,7 +58,11 @@ if __name__ == "__main__":
     # Open the file to write the results
     with open("results_share_captioner.txt", "w") as f:
         # Iterate over the files
+        print(f"Processing {len(image_files)} images...")
+        
         for image_file in image_files:
+            print(f"Processing {image_file}...")
+
             # Get the path to the image file
             img_path = os.path.join(image_dir, image_file)
             

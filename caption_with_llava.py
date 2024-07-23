@@ -57,7 +57,11 @@ if __name__ == "__main__":
 
     with open("results_llava.txt", "w") as f:
         # Process each image
+        print(f"Processing {len(image_files)} images...")
+
         for image_file in image_files:
+            print(f"Processing {image_file}...")
+
             image_path = os.path.join(image_dir, image_file)
             
             # Measure execution time
@@ -67,9 +71,8 @@ if __name__ == "__main__":
             
             # Calculate and display execution time
             exec_time = end_time - start_time
-            print(f"--- Image: {image_file}, Execution Time: {exec_time:.2f} seconds")
-            print(caption)
-            print()
+            f.write(f"--- Image: {image_file}, Execution Time: {exec_time:.2f} seconds\n")
+            f.write(f"{caption}\n\n")
             
             # Accumulate total time and count
             total_time += exec_time
@@ -77,6 +80,6 @@ if __name__ == "__main__":
 
         # Calculate and display average execution time
         avg_time = total_time / num_images
-        print(f"Average Execution Time: {avg_time:.2f} seconds")
+        f.write(f"Average Execution Time: {avg_time:.2f} seconds\n")
 
 

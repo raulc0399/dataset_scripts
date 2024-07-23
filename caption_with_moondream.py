@@ -25,8 +25,12 @@ total_time = 0
 average_time = 0
 
 with open("results_moondream.txt", "a") as f:
-# Process each image file
+    # Process each image file
+    print(f"Processing {len(image_files)} images...")
+
     for image_file in image_files:
+        print(f"Processing {image_file}...")
+        
         # Construct the full path to the image file
         image_path = os.path.join(image_dir, image_file)
 
