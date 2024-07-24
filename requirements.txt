@@ -7,3 +7,4 @@ sentencepiece
 torchvision
 timm
 einops
+controlnet-aux
