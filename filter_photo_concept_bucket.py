@@ -8,7 +8,7 @@ import time
 dataset = load_dataset("ptx0/photo-concept-bucket")
 dataset = dataset['train']
 
-keywords_to_filter_for = ["person", "men", "women", "people", "boys", "girls"]
+keywords_to_filter_for = ["person", "man", "woman", "men", "women", "people", "boys", "girls", "boy", "girl"]
 # keywords_to_filter_for = ["architecture", "house", "skyscraper", "facade"]
 
 def contains_keywords(text):
@@ -26,6 +26,9 @@ def contains_keyword(keyword, text):
     text = text.lower()
 
     return keyword in text
+
+# print(dataset)
+# exit()
 
 filtered_dataset = dataset.filter(
     lambda entry: contains_keywords(entry.get("title")) or 
@@ -66,4 +69,4 @@ for keyword, count in statistics.items():
 
 print(f"Total number of entries: {filtered_dataset.num_rows}")
 
-filtered_dataset.to_json("../architecture_dataset.jsonl", orient="records", lines=True)
+filtered_dataset.to_json("../persons_dataset.jsonl", orient="records", lines=True)

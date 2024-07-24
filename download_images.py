@@ -6,7 +6,7 @@ import time
 
 # Load the dataset
 # dataset = load_dataset("ptx0/photo-concept-bucket")
-dataset = load_dataset("json", data_files={"train": "../architecture_dataset.jsonl"})
+dataset = load_dataset("json", data_files={"train": "../persons_dataset.jsonl"})
 print(dataset)
 
 folder_name = "../photo-concept-bucket-images"
