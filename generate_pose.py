@@ -3,7 +3,7 @@ from PIL import Image
 
 open_pose = OpenposeDetector.from_pretrained("lllyasviel/Annotators")
 
-folder = "./images"
+folder = "./test_images"
 
 for i in range(10):
     img = Image.open(f"{folder}/{i+1}.jpg").convert("RGB").resize((512, 512))
