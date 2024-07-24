@@ -8,3 +8,4 @@ torchvision
 timm
 einops
 controlnet-aux
+mediapipe
