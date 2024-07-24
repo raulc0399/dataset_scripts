@@ -27,15 +27,20 @@ def contains_keyword(keyword, text):
 
     return keyword in text
 
-# print(dataset)
-# exit()
 
 filtered_dataset = dataset.filter(
     lambda entry: contains_keywords(entry.get("title")) or 
                   contains_keywords(entry.get("cogvlm_caption"))
 )
 
-filtered_dataset = filtered_dataset.shuffle(seed=42).select(range(0, 20000))
+print(f"Number of entries containing keywords: {filtered_dataset.num_rows}")
+
+files = os.listdir("../photo-concept-bucket-images")
+filtered_dataset = filtered_dataset.filter(lambda entry: f"image_{entry["id"]}.jpg" in files)
+
+print(f"Number of entries containing keywords and having images: {filtered_dataset.num_rows}")
+
+# filtered_dataset = filtered_dataset.shuffle(seed=42).select(range(0, 20000))
 
 # filtered_dataset_arch = filtered_dataset.filter(lambda entry: contains_keyword("architecture", entry.get("title")) or contains_keyword("architecture", entry.get("cogvlm_caption")))
 # filtered_dataset_other = filtered_dataset.filter(lambda entry: not contains_keyword("architecture", entry.get("title")) and not contains_keyword("architecture", entry.get("cogvlm_caption")))
