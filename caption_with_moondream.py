@@ -21,7 +21,7 @@ image_dir = "./images"
 image_files = os.listdir(image_dir)
 
 def save_metadata(metadata):
-    with open("metadata.jsonl", "w") as f:
+    with open("metadata.jsonl", "a") as f:
         for item in metadata:
             json_line = json.dumps(item)
             f.write(json_line + '\n')
