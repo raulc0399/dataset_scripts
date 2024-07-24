@@ -15,7 +15,7 @@ folder_name = "../photo-concept-bucket-images"
 os.makedirs(folder_name, exist_ok=True)
 
 # Iterate through the dataset and download images
-for i, item in enumerate(tqdm(dataset['train'])):  # Assuming 'train' split, adjust if needed
+for i, item in enumerate(tqdm(dataset['train'])):
     url = item['url']
     
     file_extension = url.split('.')[-1].replace('&fm=jpg', '')
