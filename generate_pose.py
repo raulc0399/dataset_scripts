@@ -37,7 +37,7 @@ def process_image(file_queue, folder, pose_folder, open_pose_instance, pbar, cou
             processed_image_open_pose = open_pose_instance(img, hand_and_face=True, detect_resolution=1024, image_resolution=1024)
             if processed_image_open_pose is not None:
                 processed_image_open_pose.save(output_path)
-                os.system(f"cp {file_path} {output_path}")
+                os.system(f"cp {file_path} {os.path.join(pose_folder, file_name)}")
                 
                 processed_count = counter.increment()
                 pbar.set_description(f"With pose: {processed_count}")
