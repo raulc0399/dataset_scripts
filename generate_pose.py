@@ -6,8 +6,8 @@ from tqdm import tqdm
 open_pose = OpenposeDetector.from_pretrained("lllyasviel/Annotators")
 open_pose = open_pose.to("cuda")
 
-folder = "./test_images"
-# folder = "../persons-photo-concept-bucket-images-to-train"
+# folder = "./test_images"
+folder = "../persons-photo-concept-bucket-images-to-train"
 pose_folder = os.path.join(folder, "pose")
 
 if not os.path.exists(pose_folder):
