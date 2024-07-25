@@ -1,0 +1,148 @@
+--- Image: 13.jpg, Execution Time: 2.15 seconds
+A modern, gray and orange pods suspended from a concrete bridge are illuminated by a warm orange light, creating a cozy atmosphere. The pods are equipped with a bed and a small window, offering a unique sleeping experience. The bridge is supported by sturdy concrete pillars, and a body of water stretches out in the background, with a city skyline visible in the distance.
+
+--- Image: 32.jpg, Execution Time: 2.20 seconds
+The image depicts a modern bathroom with a white color scheme. The floor is covered in white tiles, and the walls are adorned with black lines. A white bathtub is situated in the center of the room, with a white shower head attached to the wall. A white toilet is located on the right side of the room. The room is illuminated by two pendant lights hanging from the ceiling, and a window on the left side allows natural light to enter the space.
+
+--- Image: 6.jpg, Execution Time: 1.63 seconds
+The image depicts a modern living room with a large white sectional sofa and matching ottoman, arranged in a U-shape. The room features a wooden floor and white walls, with a large window on the left wall allowing natural light to fill the space. The room is illuminated by track lighting, creating a warm and inviting atmosphere.
+
+--- Image: 2.jpg, Execution Time: 1.79 seconds
+The image depicts a modern office space with a curved beige reception desk in the center, featuring a white lamp and a small orange vase. Above the desk, a black sign displays the name "KIAHMOI". The office is framed by a beige wall with a curved archway, and a small orange flower hangs on the wall.
+
+--- Image: 1.jpg, Execution Time: 1.96 seconds
+The image depicts a quaint courtyard with a stone wall on the right and a stone building with a balcony on the left. The courtyard is paved with gray cobblestones and features a small table and chairs. The stone wall on the right is adorned with a black metal railing, while the stone building on the left has a red tile roof. The sky above is a clear blue, and the sun is shining brightly, casting a warm glow on the scene.
+
+--- Image: 31.jpg, Execution Time: 2.03 seconds
+The image shows the entrance to a modern café named "NIRVANA". The café's name is prominently displayed in large white letters on a black sign above the entrance. The entrance is a large glass door with a black metal frame, and a small balcony with a table and chairs is visible on the right side. The entrance is set against a gray concrete wall, and the café is illuminated by a warm yellow light, creating a welcoming atmosphere.
+
+--- Image: 10.jpg, Execution Time: 1.83 seconds
+The image presents an aerial view of a modern garden. A small pond with a black water feature is situated in the center, surrounded by a lush green lawn. A small tree stands on the right side of the pond, and a small building with a wooden roof is visible on the left side. The garden is enclosed by a white fence, and a large window with white blinds is visible on the left side of the image.
+
+--- Image: 21.jpg, Execution Time: 1.79 seconds
+The image depicts a modern house with a white corrugated metal exterior and a blue door. The house features a large window on the left side, allowing natural light to enter the space. The interior is furnished with a green couch and a blue armchair, creating a cozy atmosphere. The house is surrounded by lush greenery, including palm trees and other tropical plants, which add a sense of tranquility to the scene.
+
+--- Image: 42.jpg, Execution Time: 1.98 seconds
+The image depicts a modern apartment building with a sleek, black exterior and white accents. The building features a unique design with six rectangular balconies, each adorned with black railings and windows. The balconies are arranged in a grid-like pattern, creating a sense of symmetry. The building is situated on a street corner, with a sidewalk and a tree visible in the foreground. The image is taken from a low angle, emphasizing the height of the building and the balconies.
+
+--- Image: 50.jpg, Execution Time: 2.04 seconds
+The image presents a cityscape dominated by a towering, curved skyscraper with a pointed top and a unique design. The building's facade is a blend of glass and concrete, reflecting the surrounding cityscape. The skyscraper is situated on the left side of the image, with a river flowing in the foreground. On the right side, a series of other buildings rise, their designs varying in height and style. The sky above is a clear blue, providing a serene backdrop to the urban scene.
+
+--- Image: 44.jpg, Execution Time: 2.11 seconds
+The image depicts a modern kitchen with a large island in the center, featuring a white countertop and a black faucet. The island is surrounded by a white backsplash and has a sink on the right side. Above the island, two pendant lights hang from the ceiling, casting a warm glow. The kitchen is equipped with a stainless steel oven and a microwave, and the walls are painted in a light green color. The floor is made of light-colored wood, adding a natural element to the space.
+
+--- Image: 30.jpg, Execution Time: 2.07 seconds
+The image depicts a modern art gallery with a wooden archway framing the entrance. The archway is adorned with a wooden plaque bearing the name "VALE SORROSO". The gallery features a concrete floor and a wooden bench, with a white sculpture of a person sitting on the bench. The gallery is filled with various artworks displayed on the walls, including a blue abstract painting and a white sculpture of a person. The gallery is illuminated by natural light filtering through a window on the left side.
+
+--- Image: 14.jpg, Execution Time: 1.51 seconds
+The image depicts a modern house with a white exterior and a black roof, situated in a snowy landscape. The house features a large glass window on the right side, reflecting the surrounding trees and sky. The house is surrounded by a snow-covered lawn, with a few trees visible in the background. The sky overhead is overcast, casting a soft light over the scene.
+
+--- Image: 8.jpg, Execution Time: 1.62 seconds
+The image depicts a modern building with a unique architectural design. The building features a concrete structure with a wooden balcony on the second floor, and a black metal gate on the ground floor. The building is illuminated by warm lighting, creating a cozy atmosphere. The building is surrounded by trees, and a sign reading "SWATA" is visible on the building.
+
+--- Image: 3.jpg, Execution Time: 1.64 seconds
+The image depicts a modern house nestled in a lush, forested area. The house features a flat roof and a large porch, with a stone wall surrounding the property. A gravel path leads up to the house, and a small garden with a tree and shrub is visible in the foreground. The sky above is overcast, casting a soft light over the scene.
+
+--- Image: 19.jpg, Execution Time: 1.52 seconds
+The image depicts a modern living room with a large window offering a view of a snowy forest. The room features a high ceiling with a wooden panel, a black sofa, a wooden coffee table, and a black floor lamp. The room is illuminated by natural light from the window, creating a warm and inviting atmosphere.
+
+--- Image: 24.jpg, Execution Time: 2.64 seconds
+The image presents a meticulously crafted miniature model of a futuristic cityscape. The city is composed of a complex network of buildings and roads, each meticulously designed and illuminated with a myriad of colors. The buildings, varying in height and design, are interconnected by a series of roads, creating a sense of depth and scale. The city is surrounded by a lush expanse of green grass, providing a stark contrast to the urban structures. The model is meticulously detailed, with each element carefully placed to create a harmonious balance. The perspective of the image is from a low angle, looking up at the city, which enhances the grandeur of the structures and the vastness of the cityscape.
+
+--- Image: 33.jpg, Execution Time: 1.81 seconds
+The image depicts a modern outdoor patio with a wooden deck and a metal railing. The patio is illuminated by a warm yellow light, creating a cozy atmosphere. Three chairs in blue, red, and white are arranged on the deck, facing a staircase leading to a balcony. The patio is surrounded by lush greenery, including plants and trees, and a large window on the right side of the image allows natural light to enter the space.
+
+--- Image: 18.jpg, Execution Time: 1.78 seconds
+The image depicts a serene tropical garden with a pool, surrounded by a stone wall and a purple building. The pool is filled with clear blue water, reflecting the surrounding greenery. The garden features a variety of palm trees and other tropical plants, with a wooden deck and a stone path leading to the pool. The purple building has a small window and a stone wall, adding to the rustic charm of the scene.
+
+--- Image: 38.jpg, Execution Time: 1.28 seconds
+The image depicts a modern house with a large glass door and a wooden roof, situated in a serene forest. The house features a patio with a pool and lounge chairs, and the surrounding trees create a natural backdrop. The sky is clear blue, and the house is illuminated by warm lighting, creating a cozy and inviting atmosphere.
+
+--- Image: 7.jpg, Execution Time: 1.39 seconds
+The image depicts a modern two-story house with a concrete exterior and large windows, situated in a tropical setting. The house features a swimming pool in the foreground, surrounded by lounge chairs and potted plants. The house is surrounded by lush palm trees, creating a serene and tranquil atmosphere.
+
+--- Image: 49.jpg, Execution Time: 1.33 seconds
+The image depicts a serene garden scene. A large tree with a twisted trunk and lush green leaves dominates the center, surrounded by a gravel path and a small pond. In the background, a building with a green roof and a person walking on the sidewalk can be seen.
+
+--- Image: 4.jpg, Execution Time: 1.79 seconds
+The image depicts a serene bedroom with a large window offering a view of a lush garden. The room features a wooden bed with a white comforter and a colorful throw blanket, a wooden chair, and a wooden headboard. The room is illuminated by recessed lighting, and a ceiling fan hangs from the ceiling. The walls are painted in a light beige color, and the floor is covered in tiles.
+
+--- Image: 46.jpg, Execution Time: 2.55 seconds
+The image depicts a modern hotel lobby with a large window on the right side, allowing natural light to flood the space. The floor is made of wood, adding a warm touch to the cool tones of the room. On the left side, a large bookshelf stands tall, filled with books of various sizes and colors. In the center of the room, a white sofa with a curved backrest and armrests is positioned, accompanied by a white coffee table. A large white sculpture is placed on the floor in front of the sofa. The ceiling features a unique design with a series of curved lines that add depth and dimension to the space.
+
+--- Image: 5.jpg, Execution Time: 1.54 seconds
+The image depicts a modern interior space with a wooden floor and walls, a black metal railing, and a wooden staircase with a black metal railing. The staircase leads to a wooden door on the left side of the image. The room is illuminated by natural light filtering through a window on the right side, creating a warm and inviting atmosphere.
+
+--- Image: 48.jpg, Execution Time: 1.62 seconds
+A person is seated at a wooden desk in a modern library, engrossed in reading a book. The desk is positioned in front of a large window, offering a view of the library's interior. The room is bathed in natural light, creating a warm and inviting atmosphere. The wooden floor and walls add a touch of rustic charm to the contemporary setting.
+
+--- Image: 12.jpg, Execution Time: 1.77 seconds
+The image depicts a modern living room with a large window on the right wall, allowing natural light to fill the space. The room features a gray sofa, a black and white patterned rug, and a wooden coffee table. Two white pendant lights hang from the ceiling, and a large plant in the corner adds a touch of greenery. A woman stands near the window, her gaze directed towards the outside.
+
+--- Image: 20.jpg, Execution Time: 1.99 seconds
+The image depicts a modern living room with a large beige sectional sofa adorned with a gray throw blanket and a black coffee table in front of it. Two white ottomans flank the sofa, and a black vase with red flowers sits on the coffee table. The room features three large windows with white frames, allowing natural light to flood the space. The walls are painted in a light beige color, and a stone wall is visible on the left side of the room.
+
+--- Image: 39.jpg, Execution Time: 2.12 seconds
+The image depicts a modern bathroom with a large arched window on the left wall, allowing natural light to flood the space. The window is adorned with black shutters, adding a touch of elegance. The bathroom features a white countertop with a sink and a mirror above it, complemented by a black pendant light hanging above. The floor is covered in black and white tiles, creating a striking contrast. The walls are painted in a light gray color, and a wooden door is visible on the right side of the image.
+
+--- Image: 27.jpg, Execution Time: 2.41 seconds
+The image depicts a modern bathroom with a large, white freestanding bathtub positioned centrally. The bathtub is surrounded by a green marble wall, which features a gold-framed mirror on the left wall. A silver faucet is visible on the right wall, and a small table with a silver tray is situated next to the bathtub. The floor is covered in white tiles, and a light fixture is mounted on the ceiling, casting a warm glow over the space.
+
+--- Image: 11.jpg, Execution Time: 1.80 seconds
+The image presents an aerial view of a luxurious resort, featuring a large, curved pool surrounded by palm trees and other tropical plants. The pool is filled with clear blue water and is dotted with white lounge chairs and umbrellas. The resort is nestled amidst lush greenery, with a curved walkway leading to the pool area. The resort is designed with a modern aesthetic, with white buildings and curved roofs.
+
+--- Image: 26.jpg, Execution Time: 1.56 seconds
+The image depicts a modern living room with a wooden door featuring a round window, a white door, and a black handle. A white fur-lined chair with a round backrest is positioned in front of the door, and a white rug covers the floor. A white wall with a black light switch and a white picture frame is visible above the door.
+
+--- Image: 47.jpg, Execution Time: 2.06 seconds
+The image presents a futuristic architectural structure situated on a body of water. The building is designed in the shape of a large, curved structure with a unique, organic-like appearance. The structure is composed of a series of curved lines that create a wave-like effect, giving it a dynamic and fluid look. The building is situated on a small island, surrounded by a body of water. The sky above is a light blue color, providing a serene backdrop to the scene. The image is taken from a distance, allowing for a comprehensive view of the building and its surroundings.
+
+--- Image: 15.jpg, Execution Time: 1.64 seconds
+The image depicts a modern dining room with a large rectangular dining table surrounded by six gray chairs. The table is set with a silver bowl and a silver plate, and the room features a large wooden bookshelf with white shelves and gold accents, housing various decorative items. The room is illuminated by a row of hanging pendant lights, and the floor is covered in gray tiles.
+
+--- Image: 17.jpg, Execution Time: 1.68 seconds
+The image depicts a luxurious bedroom with a large circular window that offers a view of the ocean. The room features a bed with a white comforter and a blue blanket, a fireplace with a blue mantle, and a large fish tank with a blue fish swimming in the water. The room is illuminated by two round lights, and the walls are adorned with a black and white striped pattern.
+
+--- Image: 40.jpg, Execution Time: 2.10 seconds
+The image depicts a serene outdoor setting with a white bathtub filled with water, positioned on a balcony overlooking a vast expanse of water. The balcony is framed by a white railing and a white wall, providing a stark contrast to the surrounding greenery. The sky above is a clear blue, and the water below is a deep blue-green, dotted with several boats. The image is taken from a low angle, emphasizing the height of the balcony and the vastness of the water below.
+
+--- Image: 34.jpg, Execution Time: 1.71 seconds
+The image depicts a modern kitchen with a large white countertop and a black stovetop. A person is standing on the balcony, overlooking the kitchen. The kitchen features a large window that offers a view of a lush garden, and a sliding glass door that leads to the balcony. The room is illuminated by natural light, and the white walls reflect the light, creating a bright and airy atmosphere.
+
+--- Image: 9.jpg, Execution Time: 1.69 seconds
+The image depicts a modern house with a brown wooden exterior and a flat roof, situated in a suburban setting. The house features a large garage door and a set of stairs leading up to the entrance. The house is surrounded by lush greenery, including trees and bushes, and a sidewalk runs in front of it. The sky above is a clear blue, with a few clouds scattered across it.
+
+--- Image: 16.jpg, Execution Time: 1.97 seconds
+The image depicts a luxurious living room with a large window offering a breathtaking view of a mountainous landscape. The room is filled with natural light, creating a warm and inviting atmosphere. The furniture is predominantly white, with a gray sofa and a wooden coffee table. A large armchair is positioned near the window, and a wooden side table stands nearby. The room is adorned with various pieces of art and a vase of flowers, adding a touch of elegance and color to the space.
+
+--- Image: 36.jpg, Execution Time: 2.30 seconds
+The image depicts a modern architectural structure with a striking design. The building features a large glass window on the right side, reflecting the surrounding environment. The structure is composed of two distinct sections, with the left section being a traditional wooden building and the right section being a contemporary glass building. The glass building is situated on the right side of the image, while the wooden building is on the left. The building is surrounded by a pool of water, which reflects the structure and the sky above. The sky is a clear blue, providing a beautiful backdrop to the architectural elements.
+
+--- Image: 25.jpg, Execution Time: 1.77 seconds
+A woman in a blue dress strides confidently down a hallway with a checkered floor, flanked by ornate blue and white walls adorned with intricate designs. The hallway is lined with a wooden door and a window, and a chandelier hangs from the ceiling, casting a warm glow. The woman's path is illuminated by the light streaming in from the window, creating a serene and elegant atmosphere.
+
+--- Image: 41.jpg, Execution Time: 1.48 seconds
+The image depicts a modern architectural structure with a unique design, featuring a series of curved, blue-tinted glass panels that create a wave-like effect. The structure is situated on a hill, with a city skyline visible in the background. The photograph is taken from a high vantage point, providing a bird's eye view of the structure and its surroundings.
+
+--- Image: 29.jpg, Execution Time: 1.66 seconds
+The image depicts a modern restaurant with a black and white color scheme. The ceiling is adorned with orange pipes, and the walls are painted in a contrasting black. The restaurant features a bar area with a white counter and a black barstool, and a green plant on the wall. The dining area is furnished with orange chairs and tables, and a guitar is placed on the floor.
+
+--- Image: 23.jpg, Execution Time: 1.66 seconds
+The image depicts a futuristic building with a unique design, featuring a large, intricate structure composed of white and pink flowers and leaves. The building is situated on a small island in a body of water, with a pink and blue sky in the background. The building's reflection is visible in the water, creating a mirror image.
+
+--- Image: 35.jpg, Execution Time: 2.30 seconds
+The image depicts a cozy kitchen with a warm, rustic charm. The kitchen features wooden cabinets and countertops, creating a harmonious blend of natural and functional elements. The floor is made of wood, adding a touch of elegance to the space. A window on the left wall allows natural light to filter in, enhancing the inviting atmosphere. A person's shadow is visible on the right wall, adding a sense of depth and dimension to the scene. The kitchen is well-equipped with a stove, sink, and refrigerator, suggesting it is ready for cooking and meal preparation.
+
+--- Image: 28.jpg, Execution Time: 1.89 seconds
+The image depicts a modern dining area with a wooden table surrounded by six chairs, set against a brick wall. A large window with a black frame allows natural light to enter the space, and a chandelier hangs from the ceiling. The room is framed by a brick wall on one side and a glass wall on the other, creating a sense of openness. The floor is made of concrete, and a small garden with plants is visible in the foreground.
+
+--- Image: 37.jpg, Execution Time: 2.10 seconds
+The image depicts a modern kitchen with a large window that allows natural light to flood the space. The kitchen features a wooden countertop with a sink, a black oven, and a wooden cabinet. A large island with a sink and a black barstool is situated in the center of the room. A glass table with a red and white rug is positioned in front of the island. A black track lighting system illuminates the space, and a large window on the right side offers a view of trees outside.
+
+--- Image: 43.jpg, Execution Time: 1.81 seconds
+The image depicts a modern reception area with a large, curved marble reception desk in the center. Above the desk, a curved, white neon sign with a wave-like design hangs, casting a soft glow. The walls are covered in a gray marble pattern, and a gray rug is placed in front of the desk. The floor is made of concrete, and a gray metal railing is visible on the right side of the image.
+
+--- Image: 45.jpg, Execution Time: 1.42 seconds
+The image depicts a modern bedroom with a large window offering a view of a tree-lined street. The room features a white bed with a blue blanket, a wooden nightstand, and a concrete bench. The room is illuminated by natural light streaming in through the window, creating a serene and tranquil atmosphere.
+
+Average execution time: 1.8467616888941552 seconds
