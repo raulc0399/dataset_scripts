@@ -30,7 +30,7 @@ def process_image(file_queue, folder, pose_folder, open_pose_instance, pbar, cou
         file_path = os.path.join(folder, file_name)
 
         output_file_name = f"{os.path.splitext(file_name)[0]}_pose.jpg"
-        output_path = os.path.join(folder, output_file_name)
+        output_path = os.path.join(pose_folder, output_file_name)
 
         try:
             img = Image.open(file_path)
@@ -93,8 +93,8 @@ def main(folder, pose_folder, num_threads=8):
             print(f"Total processed images: {counter.get_value()}")
 
 if __name__ == "__main__":
-    folder = "./test_images"
-    # folder = "../persons-photo-concept-bucket-images-to-train"
+    # folder = "./test_images"
+    folder = "../persons-photo-concept-bucket-images-to-train"
     pose_folder = os.path.join(folder, "pose")
 
     if not os.path.exists(pose_folder):
