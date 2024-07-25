@@ -15,12 +15,12 @@ if not os.path.exists(pose_folder):
 
 files = os.listdir(folder)
 
+count = 0
+
 for file_name in tqdm(files):
     input_file_path = os.path.join(folder, file_name)
     if os.path.isdir(input_file_path) or not input_file_path.lower().endswith(('.jpg', '.jpeg', '.png')):
         continue
-
-    # print(f"Processing {file_name}")
 
     copied_file_path = os.path.join(pose_folder, file_name)
                                     
@@ -28,8 +28,11 @@ for file_name in tqdm(files):
     processed_image_open_pose = open_pose(img, hand_and_face=True, detect_resolution=1024, image_resolution=1024)
 
     if processed_image_open_pose is None:
-        # print(f"No pose detected for {file_name}")
         pass
     else:
         os.system(f"cp {input_file_path} {copied_file_path}")
         processed_image_open_pose.save(os.path.join(pose_folder, f"{os.path.splitext(file_name)[0]}_pose.jpg"))
+        count += 1
+
+    if count % 500 == 0:
+        print(f"Generated {count} files")
