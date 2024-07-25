@@ -9,3 +9,4 @@ timm
 einops
 controlnet-aux
 mediapipe
+pyvips
