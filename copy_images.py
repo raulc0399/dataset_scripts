@@ -2,7 +2,6 @@ from datasets import load_dataset
 from tqdm import tqdm
 import os
 
-
 # Load the dataset
 # dataset = load_dataset("ptx0/photo-concept-bucket")
 dataset = load_dataset("json", data_files={"train": "../persons_dataset.jsonl"})
