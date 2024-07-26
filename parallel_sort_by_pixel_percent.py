@@ -1,33 +1,56 @@
 import os
 import multiprocessing
 import pyvips
-import numpy as np
-import matplotlib.pyplot as plt
+import shutil
 from tqdm import tqdm
 
-def calculate_black_pixel_percentage(input_image_path, black_threshold=0):
+def calculate_black_pixel_percentage(args):
+    input_image_path, black_threshold = args
     image = pyvips.Image.new_from_file(input_image_path)
+
     if image.bands > 1:
         gray_image = image.colourspace('b-w')
     else:
         gray_image = image
 
     black_percentage = (gray_image <= black_threshold).avg() * 100
-    return black_percentage
+    return (input_image_path, black_percentage)
 
 def main():
-    num_processes = 8 # multiprocessing.cpu_count()
+    num_processes = multiprocessing.cpu_count()
     
     base_folder = "../persons-photo-concept-bucket-images-to-train/"
     input_folder = os.path.join(base_folder, "pose")
+    output_folder = os.path.join(base_folder, "pose_filtered")
     
-    # Get list of image files
-    image_files = [f for f in os.listdir(input_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
-
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    
+    # Get list of pose image files
+    pose_files = [f for f in os.listdir(input_folder) if f.lower().endswith('_pose.jpg')]
+    
+    # Prepare arguments for multiprocessing
+    args = [(os.path.join(input_folder, f), 0) for f in pose_files]
+    
     # Create a multiprocessing pool
     with multiprocessing.Pool(processes=num_processes) as pool:
         # Process images in parallel with progress bar
-        list(tqdm(pool.imap_unordered(calculate_black_pixel_percentage, image_files), total=len(calculate_black_pixel_percentage), desc="generating histograms"))
+        results = list(tqdm(pool.imap_unordered(calculate_black_pixel_percentage, args), total=len(args), desc="Calculating black pixel percentages"))
+    
+    # Sort results by black pixel percentage
+    sorted_results = sorted(results, key=lambda x: x[1])
+    
+    # Copy the first 20,000 pairs of files with the least black pixels
+    for i, (file_path, _) in enumerate(tqdm(sorted_results[:20000], desc="Copying files")):
+        pose_file = os.path.basename(file_path)
+        original_file = pose_file.replace('_pose.jpg', '.jpg')
+        
+        # Copy pose file
+        shutil.copy2(file_path, os.path.join(output_folder, pose_file))
+        
+        # Copy original file
+        original_file_path = os.path.join(input_folder, original_file)
+        shutil.copy2(original_file_path, os.path.join(output_folder, original_file))
 
 if __name__ == "__main__":
     main()
