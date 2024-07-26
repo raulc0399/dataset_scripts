@@ -5,6 +5,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from queue import Queue, Empty
 import os
 import threading
+import gc
 
 class Counter:
     def __init__(self):
@@ -52,11 +53,17 @@ def main(folder, pose_folder, num_threads=8):
     files_to_process = []
     files_in_directory = os.listdir(folder)
 
+    already_processed_files = os.listdir(pose_folder)
+
     for file_name in files_in_directory:
         input_file_path = os.path.join(folder, file_name)
 
-        if os.path.isfile(input_file_path) and input_file_path.lower().endswith(('.jpg', '.jpeg', '.png')) and not file_name.endswith("_pose.jpg"):
+        if os.path.isfile(input_file_path) and input_file_path.lower().endswith(('.jpg', '.jpeg', '.png')) and not file_name in already_processed_files:
             files_to_process.append(file_name)
+
+    del already_processed_files
+    del files_in_directory
+    gc.collect()
 
     file_queue = Queue()
     for file in files_to_process:
