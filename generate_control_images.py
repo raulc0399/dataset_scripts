@@ -69,6 +69,9 @@ class Counter:
         with self.lock:
             return self.value
 
+def get_control_file_name(file_name):
+    return f"{os.path.splitext(file_name)[0]}_{control_type}.jpg"
+
 def process_image(file_queue, folder, output_folder, processor, pbar, counter):
     while True:
         try:
@@ -78,7 +81,7 @@ def process_image(file_queue, folder, output_folder, processor, pbar, counter):
 
         file_path = os.path.join(folder, file_name)
 
-        output_file_name = f"{os.path.splitext(file_name)[0]}_{control_type}.jpg"
+        output_file_name = get_control_file_name(file_name)
         output_path = os.path.join(output_folder, output_file_name)
 
         try:
@@ -97,7 +100,7 @@ def process_image(file_queue, folder, output_folder, processor, pbar, counter):
         pbar.update(1)
         file_queue.task_done()
 
-def main(folder, output_folder, num_threads=8):
+def main(folder, output_folder, num_threads=12):
     files_to_process = []
     files_in_directory = os.listdir(folder)
 
@@ -105,8 +108,9 @@ def main(folder, output_folder, num_threads=8):
 
     for file_name in files_in_directory:
         input_file_path = os.path.join(folder, file_name)
+        control_file_name = get_control_file_name(file_name)
 
-        if os.path.isfile(input_file_path) and input_file_path.lower().endswith(('.jpg', '.jpeg', '.png')) and not file_name in already_processed_files:
+        if os.path.isfile(input_file_path) and input_file_path.lower().endswith(('.jpg', '.jpeg', '.png')) and not control_file_name in already_processed_files:
             files_to_process.append(file_name)
 
     del already_processed_files

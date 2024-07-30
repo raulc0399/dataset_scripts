@@ -57,8 +57,9 @@ def main(folder, pose_folder, num_threads=8):
 
     for file_name in files_in_directory:
         input_file_path = os.path.join(folder, file_name)
+        canny_file_name = f"{os.path.splitext(file_name)[0]}_pose.jpg"
 
-        if os.path.isfile(input_file_path) and input_file_path.lower().endswith(('.jpg', '.jpeg', '.png')) and not file_name in already_processed_files:
+        if os.path.isfile(input_file_path) and input_file_path.lower().endswith(('.jpg', '.jpeg', '.png')) and not canny_file_name in already_processed_files:
             files_to_process.append(file_name)
 
     del already_processed_files
