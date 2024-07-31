@@ -9,7 +9,7 @@ import os
 import threading
 import gc
 
-control_type = "canny"
+control_type = "teed"
 
 class ProcessorFactory:
     @staticmethod
@@ -18,15 +18,15 @@ class ProcessorFactory:
             return CannyDetector()
         
         elif processor_type == "midas":
-            return MidasDetector.from_pretrained("lllyasviel/Annotators")
+            return MidasDetector.from_pretrained("lllyasviel/Annotators").to("cuda")
         
         elif processor_type == "anyline":
             return AnylineDetector.from_pretrained(
                "TheMistoAI/MistoLine", filename="MTEED.pth", subfolder="Anyline"
-            )
+            ).to("cuda")
         
         elif processor_type == "teed":
-            return TEEDdetector.from_pretrained("fal-ai/teed", filename="5_model.pth")
+            return TEEDdetector.from_pretrained("fal-ai/teed", filename="5_model.pth").to("cuda")
         
         else:
             raise ValueError("Invalid processor type")
@@ -48,7 +48,7 @@ class Processor:
             self.processor(image)
         
         elif self.processor_type == "anyline":
-            self.processor(image, detect_resolution=1024)
+            self.processor(image)
         
         elif self.processor_type == "teed":
             self.processor(image, detect_resolution=1024)
@@ -93,6 +93,8 @@ def process_image(file_queue, folder, output_folder, processor, pbar, counter):
                 
                 processed_count = counter.increment()
                 pbar.set_description(f"Control images: {processed_count}")
+            else:
+                print(f"Error processing {file_name}: No output image")
 
         except Exception as e:
             print(f"Error processing {file_name}: {str(e)}")
@@ -100,18 +102,24 @@ def process_image(file_queue, folder, output_folder, processor, pbar, counter):
         pbar.update(1)
         file_queue.task_done()
 
-def main(folder, output_folder, num_threads=12):
+def main(folder, output_folder, num_threads=8):
     files_to_process = []
     files_in_directory = os.listdir(folder)
 
     already_processed_files = os.listdir(output_folder)
 
+    i = 0
     for file_name in files_in_directory:
         input_file_path = os.path.join(folder, file_name)
         control_file_name = get_control_file_name(file_name)
 
         if os.path.isfile(input_file_path) and input_file_path.lower().endswith(('.jpg', '.jpeg', '.png')) and not control_file_name in already_processed_files:
             files_to_process.append(file_name)
+
+        i += 1
+
+        if i == 10:
+            break
 
     del already_processed_files
     del files_in_directory
