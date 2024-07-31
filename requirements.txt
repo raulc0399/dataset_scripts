@@ -10,3 +10,4 @@ einops
 controlnet-aux
 mediapipe
 pyvips
+fastparquet
