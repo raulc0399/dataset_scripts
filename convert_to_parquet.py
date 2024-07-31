@@ -25,7 +25,6 @@ def process_chunk(data, images_folder, parquet_file):
     df = pd.DataFrame(data)
 
     for column in ['image', 'conditioning_image']:
-        # df[column] = df[column].apply(lambda x: load_image(os.path.join(image_folder, x[0])))
         df[column] = df[column].apply(lambda x: Image.open(os.path.join(images_folder, x)).tobytes())
 
     # Create/Append to Parquet file
@@ -42,6 +41,9 @@ def convert_json_to_parquet(json_file, parquet_file):
 
     # Convert to DataFrame
     df = pd.DataFrame(data)
+
+    for column in ['image', 'conditioning_image']:
+        df[column] = df[column].apply(lambda x: os.path.join("./images", x))
 
     df.to_parquet(parquet_file, engine='pyarrow')
 
