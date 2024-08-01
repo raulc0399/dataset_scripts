@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 import os
+import io
 from PIL import Image
 from tqdm import tqdm
 
@@ -35,12 +36,27 @@ def convert_json_to_parquet_with_images(json_file, parquet_file, images_folder):
     if data:
         process_chunk(data, images_folder, parquet_file, chunk_index, max_nr)
 
+def compress_to_png_bytes(image_path, quality=95):
+    with Image.open(image_path) as img:
+        # Convert to RGB if the image is in RGBA mode
+        if img.mode == 'RGBA':
+            img = img.convert('RGB')
+        
+        # Create a byte stream to save the compressed image
+        byte_arr = io.BytesIO()
+        
+        # Save the image as PNG with compression
+        img.save(byte_arr, format='PNG', optimize=True, quality=quality)
+        
+        # Return the byte data
+        return byte_arr.getvalue()
+
 def process_chunk(data, images_folder, parquet_file, chunk_index, max_nr):
     # Convert chunk to DataFrame
     df = pd.DataFrame(data)
 
     for column in ['image', 'conditioning_image']:
-        df[column] = df[column].apply(lambda x: Image.open(os.path.join(images_folder, x)).tobytes())
+        df[column] = df[column].apply(lambda x: compress_to_png_bytes(os.path.join(images_folder, x)))
 
     # Create
     parquet_file_with_index = parquet_file.replace('.parquet', f'-{chunk_index:05d}-of-{max_nr:05d}.parquet')
