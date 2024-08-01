@@ -15,7 +15,10 @@ def convert_json_to_parquet_with_images(json_file, parquet_file, images_folder):
     # Calculate the maximum number of chunks
     total_lines = count_lines(json_file)
     max_nr = (total_lines + chunk_size - 1) // chunk_size
+
+    # chunk_index is zero based, so max nr is one less    
     chunk_index = 0
+    max_nr -= 1
 
     print(f"Converting {total_lines} lines to parquet with chunk size {chunk_size} and {max_nr} chunks")
 
