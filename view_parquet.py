@@ -17,5 +17,8 @@ for file_name in file_list[:10]:
 
         print(df.head(5))
 
+        print("First row:")
+        print(df.iloc[0])
+
         print("\n\n")
         
