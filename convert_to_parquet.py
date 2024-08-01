@@ -76,8 +76,8 @@ def convert_json_to_parquet(json_file, parquet_file):
     df.to_parquet(parquet_file, engine='pyarrow')
 
 # Usage
-images_folder = '../persons-photo-concept-bucket-images-to-train/open_pose_controlnet/images'
-json_file = '../persons-photo-concept-bucket-images-to-train/open_pose_controlnet/images/metadata.jsonl'
+images_folder = '../persons-photo-concept-bucket-images-to-train/open_pose_controlnet/train/images'
+json_file = '../persons-photo-concept-bucket-images-to-train/open_pose_controlnet/train/images/metadata.jsonl'
 parquet_files_folder = '../persons-photo-concept-bucket-images-to-train/open_pose_controlnet/data'
 
 os.makedirs(parquet_files_folder, exist_ok=True)
