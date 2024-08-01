@@ -5,7 +5,7 @@ parquet_files_folder = '../persons-photo-concept-bucket-images-to-train/open_pos
 file_list = os.listdir(parquet_files_folder)
 file_list.sort(reverse=True)
 
-for file_name in file_list[:10]:
+for file_name in file_list[:5]:
     if file_name.endswith('.parquet'):
         file_path = os.path.join(parquet_files_folder, file_name)
 
