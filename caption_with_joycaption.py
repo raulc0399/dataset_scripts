@@ -1,6 +1,4 @@
-import spaces
-import gradio as gr
-from huggingface_hub import InferenceClient
+import time
 from torch import nn
 from transformers import AutoModel, AutoProcessor, AutoTokenizer, PreTrainedTokenizer, PreTrainedTokenizerFast, AutoModelForCausalLM
 from pathlib import Path
@@ -9,15 +7,10 @@ import torch.amp.autocast_mode
 from PIL import Image
 import os
 
-
 CLIP_PATH = "google/siglip-so400m-patch14-384"
 VLM_PROMPT = "A descriptive caption for this image:\n"
 MODEL_PATH = "meta-llama/Meta-Llama-3.1-8B"
 CHECKPOINT_PATH = Path("wpkklhc6")
-TITLE = "<h1><center>JoyCaption Pre-Alpha (2024-07-30a)</center></h1>"
-
-HF_TOKEN = os.environ.get("HF_TOKEN", None)
-
 
 class ImageAdapter(nn.Module):
 	def __init__(self, input_features: int, output_features: int):
@@ -61,69 +54,88 @@ image_adapter.eval()
 image_adapter.to("cuda")
 
 
-@spaces.GPU()
 @torch.no_grad()
-def stream_chat(input_image: Image.Image):
-	torch.cuda.empty_cache()
+def generate_image_caption(image_path):
+    input_image = Image.open(image_path)
+    # torch.cuda.empty_cache()
 
-	# Preprocess image
-	image = clip_processor(images=input_image, return_tensors='pt').pixel_values
-	image = image.to('cuda')
+    # Preprocess image
+    image = clip_processor(images=input_image, return_tensors='pt').pixel_values
+    image = image.to('cuda')
 
-	# Tokenize the prompt
-	prompt = tokenizer.encode(VLM_PROMPT, return_tensors='pt', padding=False, truncation=False, add_special_tokens=False)
+    # Tokenize the prompt
+    prompt = tokenizer.encode(VLM_PROMPT, return_tensors='pt', padding=False, truncation=False, add_special_tokens=False)
 
-	# Embed image
-	with torch.amp.autocast_mode.autocast('cuda', enabled=True):
-		vision_outputs = clip_model(pixel_values=image, output_hidden_states=True)
-		image_features = vision_outputs.hidden_states[-2]
-		embedded_images = image_adapter(image_features)
-		embedded_images = embedded_images.to('cuda')
-	
-	# Embed prompt
-	prompt_embeds = text_model.model.embed_tokens(prompt.to('cuda'))
-	assert prompt_embeds.shape == (1, prompt.shape[1], text_model.config.hidden_size), f"Prompt shape is {prompt_embeds.shape}, expected {(1, prompt.shape[1], text_model.config.hidden_size)}"
-	embedded_bos = text_model.model.embed_tokens(torch.tensor([[tokenizer.bos_token_id]], device=text_model.device, dtype=torch.int64))
+    # Embed image
+    with torch.amp.autocast_mode.autocast('cuda', enabled=True):
+        vision_outputs = clip_model(pixel_values=image, output_hidden_states=True)
+        image_features = vision_outputs.hidden_states[-2]
+        embedded_images = image_adapter(image_features)
+        embedded_images = embedded_images.to('cuda')
+    
+    # Embed prompt
+    prompt_embeds = text_model.model.embed_tokens(prompt.to('cuda'))
+    assert prompt_embeds.shape == (1, prompt.shape[1], text_model.config.hidden_size), f"Prompt shape is {prompt_embeds.shape}, expected {(1, prompt.shape[1], text_model.config.hidden_size)}"
+    embedded_bos = text_model.model.embed_tokens(torch.tensor([[tokenizer.bos_token_id]], device=text_model.device, dtype=torch.int64))
 
-	# Construct prompts
-	inputs_embeds = torch.cat([
-		embedded_bos.expand(embedded_images.shape[0], -1, -1),
-		embedded_images.to(dtype=embedded_bos.dtype),
-		prompt_embeds.expand(embedded_images.shape[0], -1, -1),
-	], dim=1)
+    # Construct prompts
+    inputs_embeds = torch.cat([
+        embedded_bos.expand(embedded_images.shape[0], -1, -1),
+        embedded_images.to(dtype=embedded_bos.dtype),
+        prompt_embeds.expand(embedded_images.shape[0], -1, -1),
+    ], dim=1)
 
-	input_ids = torch.cat([
-		torch.tensor([[tokenizer.bos_token_id]], dtype=torch.long),
-		torch.zeros((1, embedded_images.shape[1]), dtype=torch.long),
-		prompt,
-	], dim=1).to('cuda')
-	attention_mask = torch.ones_like(input_ids)
+    input_ids = torch.cat([
+        torch.tensor([[tokenizer.bos_token_id]], dtype=torch.long),
+        torch.zeros((1, embedded_images.shape[1]), dtype=torch.long),
+        prompt,
+    ], dim=1).to('cuda')
+    attention_mask = torch.ones_like(input_ids)
 
-	#generate_ids = text_model.generate(input_ids, inputs_embeds=inputs_embeds, attention_mask=attention_mask, max_new_tokens=300, do_sample=False, suppress_tokens=None)
-	generate_ids = text_model.generate(input_ids, inputs_embeds=inputs_embeds, attention_mask=attention_mask, max_new_tokens=300, do_sample=True, top_k=10, temperature=0.5, suppress_tokens=None)
+    generate_ids = text_model.generate(input_ids, inputs_embeds=inputs_embeds, attention_mask=attention_mask, max_new_tokens=300, do_sample=True, top_k=10, temperature=0.5, suppress_tokens=None)
 
-	# Trim off the prompt
-	generate_ids = generate_ids[:, input_ids.shape[1]:]
-	if generate_ids[0][-1] == tokenizer.eos_token_id:
-		generate_ids = generate_ids[:, :-1]
+    # Trim off the prompt
+    generate_ids = generate_ids[:, input_ids.shape[1]:]
+    if generate_ids[0][-1] == tokenizer.eos_token_id:
+        generate_ids = generate_ids[:, :-1]
 
-	caption = tokenizer.batch_decode(generate_ids, skip_special_tokens=False, clean_up_tokenization_spaces=False)[0]
+    caption = tokenizer.batch_decode(generate_ids, skip_special_tokens=False, clean_up_tokenization_spaces=False)[0]
 
-	return caption.strip()
-
-
-with gr.Blocks() as demo:
-	gr.HTML(TITLE)
-	with gr.Row():
-		with gr.Column():
-			input_image = gr.Image(type="pil", label="Input Image")
-			run_button = gr.Button("Caption")
-		
-		with gr.Column():
-			output_caption = gr.Textbox(label="Caption")
-	
-	run_button.click(fn=stream_chat, inputs=[input_image], outputs=[output_caption])
+    return caption.strip()
 
 
 if __name__ == "__main__":
-    demo.launch()
+    # List files in the directory
+    image_dir = "./test_images"
+    image_files = os.listdir(image_dir)
+
+    # Initialize variables for timing
+    total_time = 0
+    num_images = 0
+
+    with open("results_joycaption.txt", "w") as f:
+        # Process each image
+        print(f"Processing {len(image_files)} images...")
+
+        for image_file in image_files:
+            print(f"Processing {image_file}...")
+
+            image_path = os.path.join(image_dir, image_file)
+            
+            # Measure execution time
+            start_time = time.time()
+            caption = generate_image_caption(image_path)
+            end_time = time.time()
+            
+            # Calculate and display execution time
+            exec_time = end_time - start_time
+            f.write(f"--- Image: {image_file}, Execution Time: {exec_time:.2f} seconds\n")
+            f.write(f"{caption}\n\n")
+            
+            # Accumulate total time and count
+            total_time += exec_time
+            num_images += 1
+
+        # Calculate and display average execution time
+        avg_time = total_time / num_images
+        f.write(f"Average Execution Time: {avg_time:.2f} seconds\n")
