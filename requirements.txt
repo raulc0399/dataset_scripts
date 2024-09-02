@@ -11,4 +11,4 @@ controlnet-aux
 mediapipe
 pyvips
 fastparquet
-flash_attn
+pillow

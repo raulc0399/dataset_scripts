@@ -1,0 +1,13 @@
+--- Image: 3031220980345411603_1483075987.jpg, Execution Time: 1.44 seconds
+{'<MORE_DETAILED_CAPTION>': 'The image shows a modern black house in the middle of a snowy forest. The house has a sloping roof and large windows that let in natural light. The trees surrounding the house are covered in a thick layer of snow, and the ground is also blanketed in a layer of white. The sky is overcast and the overall mood of the image is peaceful and serene.'}
+
+--- Image: 3031534178914848251_1483075987.jpg, Execution Time: 1.17 seconds
+{'<MORE_DETAILED_CAPTION>': 'The image shows a modern house with a black exterior and a large glass roof. The house is surrounded by a well-manicured garden with a variety of plants and flowers. The garden is well-maintained with a stone pathway leading up to the entrance of the house. There are two black chairs and a table in the garden, and a few potted plants scattered throughout. The sky is blue and there are trees in the background. The overall atmosphere of the image is peaceful and serene.'}
+
+--- Image: 3031534178906442041_1483075987.jpg, Execution Time: 1.74 seconds
+{'<MORE_DETAILED_CAPTION>': 'The image shows a modern and spacious living room with a high ceiling. The ceiling is made of black wooden panels that are arranged in a zigzag pattern, creating a unique and eye-catching design. The floor is covered with a gray stone-like pattern, and there is a large window on the right side of the image that offers a view of the trees and greenery outside. On the left side, there are two large windows that let in natural light and provide a glimpse of the outside. In the center of the room, there is an open dining area with a wooden table and chairs, a sofa, and a bookshelf. The room is well-lit with natural light coming in from the large windows. The overall aesthetic of the space is minimal and contemporary.'}
+
+--- Image: 3031220980169293378_1483075987.jpg, Execution Time: 1.25 seconds
+{'<MORE_DETAILED_CAPTION>': 'The image shows a modern and minimalist bedroom with a large window that offers a view of the forest. The room has a wooden ceiling and walls, and the floor is made of light-colored tiles. In the center of the room, there is a large wooden bed with a white comforter and two white pillows. On the right side of the bed, there are two wooden nightstands with a black lamp on top. The window is covered with black blinds, allowing natural light to enter the room. The overall aesthetic of the space is minimal and contemporary.'}
+
+Average Execution Time: 1.40 seconds

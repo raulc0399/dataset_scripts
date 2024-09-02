@@ -1,17 +1,28 @@
 import os
 import time
+from unittest.mock import patch
 
 import torch
 from PIL import Image
 from transformers import AutoProcessor, AutoModelForCausalLM 
+from transformers.dynamic_module_utils import get_imports
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
+def fixed_get_imports(filename: str | os.PathLike) -> list[str]:
+    """Work around for https://huggingface.co/microsoft/phi-1_5/discussions/72."""
+    if not str(filename).endswith("/modeling_florence2.py"):
+        return get_imports(filename)
+    imports = get_imports(filename)
+    imports.remove("flash_attn")
+    return imports
+
 MODEL_ID = "microsoft/Florence-2-large"
 
-model = AutoModelForCausalLM.from_pretrained(MODEL_ID, torch_dtype=torch_dtype, trust_remote_code=True).to(device)
-processor = AutoProcessor.from_pretrained(MODEL_ID, trust_remote_code=True)
+with patch("transformers.dynamic_module_utils.get_imports", fixed_get_imports):
+    model = AutoModelForCausalLM.from_pretrained(MODEL_ID, torch_dtype=torch_dtype, trust_remote_code=True).to(device)
+    processor = AutoProcessor.from_pretrained(MODEL_ID, trust_remote_code=True)
 
 def generate_image_caption(image_path, task_prompt, text_input=None):
     image = Image.open(image_path)
