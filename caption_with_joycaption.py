@@ -53,18 +53,19 @@ image_adapter.load_state_dict(torch.load(CHECKPOINT_PATH / "image_adapter.pt", m
 image_adapter.eval()
 image_adapter.to("cuda")
 
+# Tokenize the prompt
+prompt = tokenizer.encode(VLM_PROMPT, return_tensors='pt', padding=False, truncation=False, add_special_tokens=False)
+
+# Embed prompt
+prompt_embeds = text_model.model.embed_tokens(prompt.to('cuda'))
+assert prompt_embeds.shape == (1, prompt.shape[1], text_model.config.hidden_size), f"Prompt shape is {prompt_embeds.shape}, expected {(1, prompt.shape[1], text_model.config.hidden_size)}"
+embedded_bos = text_model.model.embed_tokens(torch.tensor([[tokenizer.bos_token_id]], device=text_model.device, dtype=torch.int64))
 
 @torch.no_grad()
 def generate_image_caption(image_path):
     input_image = Image.open(image_path)
-    # torch.cuda.empty_cache()
-
-    # Preprocess image
     image = clip_processor(images=input_image, return_tensors='pt').pixel_values
     image = image.to('cuda')
-
-    # Tokenize the prompt
-    prompt = tokenizer.encode(VLM_PROMPT, return_tensors='pt', padding=False, truncation=False, add_special_tokens=False)
 
     # Embed image
     with torch.amp.autocast_mode.autocast('cuda', enabled=True):
@@ -72,11 +73,6 @@ def generate_image_caption(image_path):
         image_features = vision_outputs.hidden_states[-2]
         embedded_images = image_adapter(image_features)
         embedded_images = embedded_images.to('cuda')
-    
-    # Embed prompt
-    prompt_embeds = text_model.model.embed_tokens(prompt.to('cuda'))
-    assert prompt_embeds.shape == (1, prompt.shape[1], text_model.config.hidden_size), f"Prompt shape is {prompt_embeds.shape}, expected {(1, prompt.shape[1], text_model.config.hidden_size)}"
-    embedded_bos = text_model.model.embed_tokens(torch.tensor([[tokenizer.bos_token_id]], device=text_model.device, dtype=torch.int64))
 
     # Construct prompts
     inputs_embeds = torch.cat([
