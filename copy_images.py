@@ -2,13 +2,15 @@ from datasets import load_dataset
 from tqdm import tqdm
 import os
 
+input_json_file_path = "../architecture_dataset.jsonl"
+
 # Load the dataset
 # dataset = load_dataset("ptx0/photo-concept-bucket")
-dataset = load_dataset("json", data_files={"train": "../persons_dataset.jsonl"})
+dataset = load_dataset("json", data_files={"train": input_json_file_path})
 print(dataset)
 
-input_folder_name = "../photo-concept-bucket-images"
-output_folder_name = "../persons-photo-concept-bucket-images-to-train"
+input_folder_name = "../photo-concept-bucket-images/images"
+output_folder_name = "../architecture-photo-concept-bucket-images-to-train/images"
 
 # Create a directory to store the images
 os.makedirs(output_folder_name, exist_ok=True)
