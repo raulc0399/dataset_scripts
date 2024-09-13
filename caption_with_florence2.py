@@ -1,6 +1,7 @@
 import os
 import time
 import argparse
+from tqdm import tqdm
 from unittest.mock import patch
 
 import torch
@@ -78,8 +79,8 @@ if __name__ == "__main__":
     # Process each image
     print(f"Processing {len(image_files)} images...")
 
-    for image_file in image_files:
-        print(f"Processing {image_file}...")
+    for image_file in tqdm(image_files, desc="Processing images"):
+        # print(f"Processing {image_file}...")
 
         image_path = os.path.join(image_dir, image_file)
         
