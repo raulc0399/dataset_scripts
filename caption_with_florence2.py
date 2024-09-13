@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
     # Limit the number of images if test_run is enabled
     if args.test_run:
-        image_files = image_files[:10]
+        image_files = sorted(image_files)[:10]
 
     # Initialize variables for timing
     total_time = 0
