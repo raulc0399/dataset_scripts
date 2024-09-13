@@ -25,7 +25,7 @@ with patch("transformers.dynamic_module_utils.get_imports", fixed_get_imports):
     model = AutoModelForCausalLM.from_pretrained(MODEL_ID, torch_dtype=torch_dtype, trust_remote_code=True).to(device)
     processor = AutoProcessor.from_pretrained(MODEL_ID, trust_remote_code=True)
 
-def generate_image_caption(image_path, task_prompt, text_input=None):
+def generate_image_caption(image_path, task_prompt = "<DETAILED_CAPTION>", text_input=None):
     image = Image.open(image_path)
 
     if text_input is None:
@@ -45,13 +45,16 @@ def generate_image_caption(image_path, task_prompt, text_input=None):
 
     parsed_answer = processor.post_process_generation(generated_text, task=task_prompt, image_size=(image.width, image.height))
 
-    return parsed_answer
+    caption_text = parsed_answer[task_prompt].replace("The image shows ", "")
+
+    return caption_text
 
 if __name__ == "__main__":
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description="Generate image captions with Florence2.")
     parser.add_argument("--write-results", action="store_true", default=False, help="Write results to results_florence2.txt")
     parser.add_argument("--image-dir", type=str, default="./test_images", help="Directory containing images to process")
+    parser.add_argument("--trigger", type=str, default="", help="Trigger word or sentence for the caption generation")
     args = parser.parse_args()
 
     # List files in the directory
@@ -77,7 +80,7 @@ if __name__ == "__main__":
         
         # Measure execution time
         start_time = time.time()
-        caption = generate_image_caption(image_path, "<MORE_DETAILED_CAPTION>")
+        caption = generate_image_caption(image_path)
         end_time = time.time()
         
         # Calculate and display execution time
@@ -89,7 +92,7 @@ if __name__ == "__main__":
         # Save caption to a file with the same name but with .txt extension
         caption_file_path = os.path.splitext(image_path)[0] + ".txt"
         with open(caption_file_path, "w") as caption_file:
-            caption_file.write(caption)
+            caption_file.write(f"{args.trigger} {caption}")
         
         # Accumulate total time and count
         total_time += exec_time
