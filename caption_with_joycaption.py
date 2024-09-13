@@ -111,9 +111,9 @@ if __name__ == "__main__":
     parser.add_argument("--test-run", action="store_true", default=False, help="Process only the first 10 images")
     args = parser.parse_args()
 
-    # List files in the directory
+    # List image files in the directory
     image_dir = args.image_dir
-    image_files = os.listdir(image_dir)
+    image_files = [f for f in os.listdir(image_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif', '.tiff'))]
 
     # Limit the number of images if test_run is enabled
     if args.test_run:
