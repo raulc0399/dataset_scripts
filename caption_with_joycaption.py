@@ -1,4 +1,5 @@
 import time
+import argparse
 from torch import nn
 from transformers import AutoModel, AutoProcessor, AutoTokenizer, PreTrainedTokenizer, PreTrainedTokenizerFast, AutoModelForCausalLM
 from pathlib import Path
@@ -101,37 +102,56 @@ def generate_image_caption(image_path):
 
 
 if __name__ == "__main__":
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(description="Generate image captions with JoyCaption.")
+    parser.add_argument("--write-results", action="store_true", default=False, help="Write results to results_joycaption.txt")
+    parser.add_argument("--image-dir", type=str, default="./test_images", help="Directory containing images to process")
+    args = parser.parse_args()
+
     # List files in the directory
-    image_dir = "./test_images"
+    image_dir = args.image_dir
     image_files = os.listdir(image_dir)
 
     # Initialize variables for timing
     total_time = 0
     num_images = 0
 
-    with open("results_joycaption.txt", "w") as f:
-        # Process each image
-        print(f"Processing {len(image_files)} images...")
+    if args.write_results:
+        f = open("results_joycaption.txt", "w")
+    else:
+        f = None
 
-        for image_file in image_files:
-            print(f"Processing {image_file}...")
+    # Process each image
+    print(f"Processing {len(image_files)} images...")
 
-            image_path = os.path.join(image_dir, image_file)
-            
-            # Measure execution time
-            start_time = time.time()
-            caption = generate_image_caption(image_path)
-            end_time = time.time()
-            
-            # Calculate and display execution time
-            exec_time = end_time - start_time
+    for image_file in image_files:
+        print(f"Processing {image_file}...")
+
+        image_path = os.path.join(image_dir, image_file)
+        
+        # Measure execution time
+        start_time = time.time()
+        caption = generate_image_caption(image_path)
+        end_time = time.time()
+        
+        # Calculate and display execution time
+        exec_time = end_time - start_time
+        if f:
             f.write(f"--- Image: {image_file}, Execution Time: {exec_time:.2f} seconds\n")
             f.write(f"{caption}\n\n")
-            
-            # Accumulate total time and count
-            total_time += exec_time
-            num_images += 1
+        
+        # Save caption to a file with the same name but with .txt extension
+        caption_file_path = os.path.splitext(image_path)[0] + ".txt"
+        with open(caption_file_path, "w") as caption_file:
+            caption_file.write(caption)
+        
+        # Accumulate total time and count
+        total_time += exec_time
+        num_images += 1
 
-        # Calculate and display average execution time
-        avg_time = total_time / num_images
+    # Calculate and display average execution time
+    avg_time = total_time / num_images
+    if f:
         f.write(f"Average Execution Time: {avg_time:.2f} seconds\n")
+    if f:
+        f.close()
