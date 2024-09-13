@@ -55,11 +55,16 @@ if __name__ == "__main__":
     parser.add_argument("--write-results", action="store_true", default=False, help="Write results to results_florence2.txt")
     parser.add_argument("--image-dir", type=str, default="./test_images", help="Directory containing images to process")
     parser.add_argument("--trigger", type=str, default="", help="Trigger word or sentence for the caption generation")
+    parser.add_argument("--test-run", action="store_true", default=False, help="Process only the first 10 images")
     args = parser.parse_args()
 
     # List files in the directory
     image_dir = args.image_dir
     image_files = os.listdir(image_dir)
+
+    # Limit the number of images if test_run is enabled
+    if args.test_run:
+        image_files = image_files[:10]
 
     # Initialize variables for timing
     total_time = 0
@@ -90,7 +95,8 @@ if __name__ == "__main__":
             f.write(f"{caption}\n\n")
         
         # Save caption to a file with the same name but with .txt extension
-        caption_file_path = os.path.splitext(image_path)[0] + ".txt"
+        suffix = "_florence2" if args.test_run else ""
+        caption_file_path = os.path.splitext(image_path)[0] + suffix + ".txt"
         with open(caption_file_path, "w") as caption_file:
             caption_file.write(f"{args.trigger} {caption}")
         
