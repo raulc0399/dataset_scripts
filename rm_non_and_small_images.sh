@@ -37,7 +37,7 @@ find "$DIRECTORY" -type f | while read -r file; do
         
         # Check if either dimension is less than 1024
         if [[ -n $width && -n $height ]]; then
-            if (( width < 1024 || height < 1024 )); then
+            if (( width < 1024 && height < 1024 )); then
                 echo "Removing small image: $file ($width x $height)"
                 if [ "$TEST_MODE" = false ]; then
                     rm "$file"
