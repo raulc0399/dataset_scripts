@@ -57,7 +57,12 @@ if __name__ == "__main__":
     parser.add_argument("--image-dir", type=str, default="./test_images", help="Directory containing images to process")
     parser.add_argument("--trigger", type=str, default="", help="Trigger word or sentence for the caption generation")
     parser.add_argument("--test-run", action="store_true", default=False, help="Process only the first 10 images")
+    parser.add_argument("--output-dir", type=str, default=None, help="Directory to store the output text files")
     args = parser.parse_args()
+
+    # Create output directory if it doesn't exist
+    if args.output_dir and not os.path.exists(args.output_dir):
+        os.makedirs(args.output_dir)
 
     # List image files in the directory
     image_dir = args.image_dir
@@ -97,7 +102,10 @@ if __name__ == "__main__":
         
         # Save caption to a file with the same name but with .txt extension
         suffix = "_florence2" if args.test_run else ""
-        caption_file_path = os.path.splitext(image_path)[0] + suffix + ".txt"
+        if args.output_dir:
+            caption_file_path = os.path.join(args.output_dir, os.path.splitext(image_file)[0] + suffix + ".txt")
+        else:
+            caption_file_path = os.path.splitext(image_path)[0] + suffix + ".txt"
         with open(caption_file_path, "w") as caption_file:
             caption_file.write(f"{args.trigger} {caption}")
         
