@@ -5,11 +5,12 @@ import os
 import time
 import argparse
 from tqdm import tqdm
+import re
 
 max_new_tokens = 500
 
 # https://arxiv.org/pdf/2310.00426.pdf, Fig. 10
-prompt_for_caption = "Describe this image and its style in a very detailed manner"
+prompt_for_caption = "Describe this image start with 'trigger_word', and be as descriptive as possible. describe the image in detail, including the objects, people, and actions in the image. "
 
 def get_llava_next_model_and_processor():
     model_id = "llava-hf/llava-v1.6-mistral-7b-hf"
@@ -22,9 +23,11 @@ def get_llava_next_model_and_processor():
         # load_in_4bit=True
     ).to("cuda:0")
 
+    model.generation_config.pad_token_id = processor.tokenizer.pad_token_id
+
     return model, processor
 
-def generate_image_caption(image_path, model, processor):
+def generate_image_caption(image_path, trigger, model, processor):
     image = Image.open(image_path)
     # conversation = [
     #     {
@@ -37,7 +40,7 @@ def generate_image_caption(image_path, model, processor):
     # ]
     # prompt = processor.apply_chat_template(conversation, add_generation_prompt=True)
 
-    prompt=f"[INST] <image>\n{prompt_for_caption} [/INST]"
+    prompt=f"[INST] <image>\n{prompt_for_caption.replace('trigger_word', trigger)} [/INST]"
 
     inputs = processor(prompt, image, return_tensors="pt").to("cuda:0")
 
@@ -45,7 +48,8 @@ def generate_image_caption(image_path, model, processor):
     output = model.generate(**inputs, max_new_tokens=max_new_tokens)
 
     caption = processor.decode(output[0], skip_special_tokens=True)
-    return caption
+
+    return re.sub(r'\[INST\].*?\[/INST\]', '', caption, flags=re.DOTALL).strip()
         
 if __name__ == "__main__":
     llava_model, llava_processor = get_llava_next_model_and_processor()
@@ -84,7 +88,7 @@ if __name__ == "__main__":
         
         # Measure execution time
         start_time = time.time()
-        caption = generate_image_caption(image_path, llava_model, llava_processor)
+        caption = generate_image_caption(image_path, args.trigger, llava_model, llava_processor)
         end_time = time.time()
         
         # Calculate and display execution time
@@ -97,7 +101,7 @@ if __name__ == "__main__":
         suffix = "_llava" if args.test_run else ""
         caption_file_path = os.path.splitext(image_path)[0] + suffix + ".txt"
         with open(caption_file_path, "w") as caption_file:
-            caption_file.write(f"{args.trigger} {caption}")
+            caption_file.write(caption)
         
         # Accumulate total time and count
         total_time += exec_time
