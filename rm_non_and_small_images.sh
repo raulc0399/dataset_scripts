@@ -30,7 +30,7 @@ if [ -z "$DIRECTORY" ]; then
 fi
 
 # Loop through all files in the specified directory and subdirectories
-find "$1" -type f | while read -r file; do
+find "$DIRECTORY" -type f | while read -r file; do
     if is_image "$file"; then
         # Get image dimensions
         read width height < <(get_image_dimensions "$file")
