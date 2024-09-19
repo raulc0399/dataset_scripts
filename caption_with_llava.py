@@ -60,7 +60,7 @@ if __name__ == "__main__":
     parser.add_argument("--trigger", type=str, default="", help="Trigger word or sentence for the caption generation")
     parser.add_argument("--test-run", action="store_true", default=False, help="Process only the first 10 images")
     parser.add_argument("--output-dir", type=str, default=None, help="Directory to store the output text files")
-    parser.add_argument("--num-gpus", type=int, choices=[1, 2], default=2, help="Number of GPUs to use (1 or 2)")
+    parser.add_argument("--num-gpus", type=int, choices=[1, 2], default=1, help="Number of GPUs to use (1 or 2)")
     args = parser.parse_args()
 
     # Initialize models and processors for each GPU
