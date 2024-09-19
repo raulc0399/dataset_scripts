@@ -85,7 +85,7 @@ if __name__ == "__main__":
             )
         ]
 
-        print(f"after filter {len(image_files)}")
+        print(f"   after filter {len(image_files)}")
 
     print(f"processing total {len(image_files)} of images")
 
@@ -146,6 +146,9 @@ if __name__ == "__main__":
             batch_num_images += 1
 
         return batch_total_time, batch_num_images
+
+    print("Batch 0 has", len(batch_0_files), "images")
+    print("Batch 1 has", len(batch_1_files), "images")
 
     # Initialize total_time and num_images
     total_time = 0
