@@ -91,8 +91,11 @@ if __name__ == "__main__":
         f = None
 
     # Function to process a batch
-    def process_batch(batch_files, model, processor, device, batch_index, total_time, num_images):
+    def process_batch(batch_files, model, processor, device, batch_index):
         print(f"Processing batch {batch_index + 1} with {len(batch_files)} images on {device}...")
+
+        batch_total_time = 0
+        batch_num_images = 0
 
         for image_file in tqdm(batch_files, desc=f"Processing batch {batch_index + 1}"):
             image_path = os.path.join(image_dir, image_file)
@@ -134,8 +137,8 @@ if __name__ == "__main__":
     num_images = 0
     with ThreadPoolExecutor(max_workers=2) as executor:
         futures = [
-            executor.submit(process_batch, batch_0_files, llava_model_0, llava_processor_0, "cuda:0", 0, total_time, num_images),
-            executor.submit(process_batch, batch_1_files, llava_model_1, llava_processor_1, "cuda:1", 1, total_time, num_images)
+            executor.submit(process_batch, batch_0_files, llava_model_0, llava_processor_0, "cuda:0", 0),
+            executor.submit(process_batch, batch_1_files, llava_model_1, llava_processor_1, "cuda:1", 1)
         ]
 
         for future in as_completed(futures):
