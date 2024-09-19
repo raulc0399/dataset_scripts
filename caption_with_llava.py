@@ -91,23 +91,29 @@ if __name__ == "__main__":
 
         image_path = os.path.join(image_dir, image_file)
         
-        # Measure execution time
-        start_time = time.time()
-        caption = generate_image_caption(image_path, args.trigger, llava_model, llava_processor)
-        end_time = time.time()
-        
-        # Calculate and display execution time
-        exec_time = end_time - start_time
-        if f:
-            f.write(f"--- Image: {image_file}, Execution Time: {exec_time:.2f} seconds\n")
-            f.write(f"{caption}\n\n")
-        
         # Save caption to a file with the same name but with .txt extension
         suffix = "_llava" if args.test_run else ""
         if args.output_dir:
             caption_file_path = os.path.join(args.output_dir, os.path.splitext(image_file)[0] + suffix + ".txt")
         else:
             caption_file_path = os.path.splitext(image_path)[0] + suffix + ".txt"
+
+        # Check if caption file already exists
+        if os.path.exists(caption_file_path):
+            print(f"Caption file {caption_file_path} already exists. Skipping...")
+            continue
+
+        # Measure execution time
+        start_time = time.time()
+        caption = generate_image_caption(image_path, args.trigger, llava_model, llava_processor)
+        end_time = time.time()
+
+        # Calculate and display execution time
+        exec_time = end_time - start_time
+        if f:
+            f.write(f"--- Image: {image_file}, Execution Time: {exec_time:.2f} seconds\n")
+            f.write(f"{caption}\n\n")
+            
         with open(caption_file_path, "w") as caption_file:
             caption_file.write(caption)
         
