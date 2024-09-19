@@ -81,7 +81,7 @@ if __name__ == "__main__":
         image_files = [
             f for f in image_files
             if not os.path.exists(
-                os.path.join(args.output_dir or image_dir, os.path.splitext(f)[0] + "_llava" + ".txt")
+                os.path.join(args.output_dir or image_dir, os.path.splitext(f)[0] + ".txt")
             )
         ]
 
