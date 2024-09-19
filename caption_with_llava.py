@@ -12,7 +12,7 @@ max_new_tokens = 500
 # https://arxiv.org/pdf/2310.00426.pdf, Fig. 10
 prompt_for_caption = "Describe this image start with 'trigger_word', and be as descriptive as possible. describe the image in detail, including the objects, people, and actions in the image. "
 
-def get_llava_next_model_and_processor():
+def get_llava_next_model_and_processor(gpu_id=0):
     model_id = "llava-hf/llava-v1.6-mistral-7b-hf"
     
     processor = LlavaNextProcessor.from_pretrained(model_id)
@@ -21,7 +21,7 @@ def get_llava_next_model_and_processor():
         torch_dtype=torch.float16, 
         low_cpu_mem_usage=True,
         # load_in_4bit=True
-    ).to("cuda:0")
+    ).to(f"cuda:{gpu_id}")
 
     model.generation_config.pad_token_id = processor.tokenizer.pad_token_id
 
@@ -52,7 +52,10 @@ def generate_image_caption(image_path, trigger, model, processor):
     return re.sub(r'\[INST\].*?\[/INST\]', '', caption, flags=re.DOTALL).strip()
         
 if __name__ == "__main__":
-    llava_model, llava_processor = get_llava_next_model_and_processor()
+    # Initialize models and processors for each GPU
+    llava_model_0, llava_processor_0 = get_llava_next_model_and_processor(0)
+    llava_model_1, llava_processor_1 = get_llava_next_model_and_processor(1)
+    
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description="Generate image captions with Llava.")
     parser.add_argument("--write-results", action="store_true", default=False, help="Write results to results_llava.txt")
@@ -74,7 +77,10 @@ if __name__ == "__main__":
     if args.test_run:
         image_files = sorted(image_files)[:10]
 
-    # Initialize variables for timing
+    # Split image files into two batches
+    mid_index = len(image_files) // 2
+    batch_0_files = image_files[:mid_index]
+    batch_1_files = image_files[mid_index:]
     total_time = 0
     num_images = 0
 
@@ -83,43 +89,45 @@ if __name__ == "__main__":
     else:
         f = None
 
-    # Process each image
-    print(f"Processing {len(image_files)} images...")
-
-    for image_file in tqdm(image_files, desc="Processing images"):
-        # print(f"Processing {image_file}...")
-
-        image_path = os.path.join(image_dir, image_file)
+    # Process each batch
+    for batch_index, (batch_files, model, processor, device) in enumerate(
+        [(batch_0_files, llava_model_0, llava_processor_0, "cuda:0"), 
+         (batch_1_files, llava_model_1, llava_processor_1, "cuda:1")]):
         
-        # Save caption to a file with the same name but with .txt extension
-        suffix = "_llava" if args.test_run else ""
-        if args.output_dir:
-            caption_file_path = os.path.join(args.output_dir, os.path.splitext(image_file)[0] + suffix + ".txt")
-        else:
-            caption_file_path = os.path.splitext(image_path)[0] + suffix + ".txt"
+        print(f"Processing batch {batch_index + 1} with {len(batch_files)} images on {device}...")
 
-        # Check if caption file already exists
-        if os.path.exists(caption_file_path):
-            print(f"Caption file {caption_file_path} already exists. Skipping...")
-            continue
-
-        # Measure execution time
-        start_time = time.time()
-        caption = generate_image_caption(image_path, args.trigger, llava_model, llava_processor)
-        end_time = time.time()
-
-        # Calculate and display execution time
-        exec_time = end_time - start_time
-        if f:
-            f.write(f"--- Image: {image_file}, Execution Time: {exec_time:.2f} seconds\n")
-            f.write(f"{caption}\n\n")
+        for image_file in tqdm(batch_files, desc=f"Processing batch {batch_index + 1}"):
+            image_path = os.path.join(image_dir, image_file)
             
-        with open(caption_file_path, "w") as caption_file:
-            caption_file.write(caption)
-        
-        # Accumulate total time and count
-        total_time += exec_time
-        num_images += 1
+            # Save caption to a file with the same name but with .txt extension
+            suffix = "_llava" if args.test_run else ""
+            if args.output_dir:
+                caption_file_path = os.path.join(args.output_dir, os.path.splitext(image_file)[0] + suffix + ".txt")
+            else:
+                caption_file_path = os.path.splitext(image_path)[0] + suffix + ".txt"
+
+            # Check if caption file already exists
+            if os.path.exists(caption_file_path):
+                print(f"Caption file {caption_file_path} already exists. Skipping...")
+                continue
+
+            # Measure execution time
+            start_time = time.time()
+            caption = generate_image_caption(image_path, args.trigger, model, processor)
+            end_time = time.time()
+
+            # Calculate and display execution time
+            exec_time = end_time - start_time
+            if f:
+                f.write(f"--- Image: {image_file}, Execution Time: {exec_time:.2f} seconds\n")
+                f.write(f"{caption}\n\n")
+                
+            with open(caption_file_path, "w") as caption_file:
+                caption_file.write(caption)
+            
+            # Accumulate total time and count
+            total_time += exec_time
+            num_images += 1
 
     # Calculate and display average execution time
     avg_time = total_time / num_images
