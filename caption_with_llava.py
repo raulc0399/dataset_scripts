@@ -53,10 +53,6 @@ def generate_image_caption(image_path, trigger, model, processor, device):
     return re.sub(r'\[INST\].*?\[/INST\]', '', caption, flags=re.DOTALL).strip()
         
 if __name__ == "__main__":
-    # Initialize models and processors for each GPU
-    llava_model_0, llava_processor_0 = get_llava_next_model_and_processor(0)
-    llava_model_1, llava_processor_1 = get_llava_next_model_and_processor(1)
-    
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description="Generate image captions with Llava.")
     parser.add_argument("--write-results", action="store_true", default=False, help="Write results to results_llava.txt")
@@ -64,8 +60,14 @@ if __name__ == "__main__":
     parser.add_argument("--trigger", type=str, default="", help="Trigger word or sentence for the caption generation")
     parser.add_argument("--test-run", action="store_true", default=False, help="Process only the first 10 images")
     parser.add_argument("--output-dir", type=str, default=None, help="Directory to store the output text files")
+    parser.add_argument("--num-gpus", type=int, choices=[1, 2], default=2, help="Number of GPUs to use (1 or 2)")
     args = parser.parse_args()
 
+    # Initialize models and processors for each GPU
+    llava_model_0, llava_processor_0 = get_llava_next_model_and_processor(0)
+    if args.num_gpus == 2:
+        llava_model_1, llava_processor_1 = get_llava_next_model_and_processor(1)
+    
     # Create output directory if it doesn't exist
     if args.output_dir and not os.path.exists(args.output_dir):
         os.makedirs(args.output_dir)
@@ -153,11 +155,15 @@ if __name__ == "__main__":
     # Initialize total_time and num_images
     total_time = 0
     num_images = 0
-    with ThreadPoolExecutor(max_workers=2) as executor:
+    max_workers = args.num_gpus
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = [
-            executor.submit(process_batch, batch_0_files, llava_model_0, llava_processor_0, "cuda:0", 0),
-            executor.submit(process_batch, batch_1_files, llava_model_1, llava_processor_1, "cuda:1", 1)
+            executor.submit(process_batch, batch_0_files, llava_model_0, llava_processor_0, "cuda:0", 0)
         ]
+        if args.num_gpus == 2:
+            futures.append(
+                executor.submit(process_batch, batch_1_files, llava_model_1, llava_processor_1, "cuda:1", 1)
+            )
 
         for future in as_completed(futures):
             batch_total_time, batch_num_images = future.result()
