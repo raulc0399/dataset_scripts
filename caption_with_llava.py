@@ -106,7 +106,7 @@ if __name__ == "__main__":
 
             # Check if caption file already exists
             if os.path.exists(caption_file_path):
-                print(f"Caption file {caption_file_path} already exists. Skipping...")
+                # print(f"Caption file {caption_file_path} already exists. Skipping...")
                 continue
 
             # Measure execution time
