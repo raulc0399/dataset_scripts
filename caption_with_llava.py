@@ -85,7 +85,9 @@ if __name__ == "__main__":
             )
         ]
 
-        print(f"afte filter {len(image_files)}")
+        print(f"after filter {len(image_files)}")
+
+    print(f"processing total {len(image_files)} of images")
 
     # Limit the number of images if test_run is enabled
     if args.test_run:
