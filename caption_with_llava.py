@@ -28,7 +28,7 @@ def get_llava_next_model_and_processor(gpu_id=0):
 
     return model, processor
 
-def generate_image_caption(image_path, trigger, model, processor):
+def generate_image_caption(image_path, trigger, model, processor, device):
     image = Image.open(image_path)
     # conversation = [
     #     {
@@ -43,7 +43,7 @@ def generate_image_caption(image_path, trigger, model, processor):
 
     prompt=f"[INST] <image>\n{prompt_for_caption.replace('trigger_word', trigger)} [/INST]"
 
-    inputs = processor(prompt, image, return_tensors="pt").to("cuda:0")
+    inputs = processor(prompt, image, return_tensors="pt").to(device)
 
     # autoregressively complete prompt
     output = model.generate(**inputs, max_new_tokens=max_new_tokens)
@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
             # Measure execution time
             start_time = time.time()
-            caption = generate_image_caption(image_path, args.trigger, model, processor)
+            caption = generate_image_caption(image_path, args.trigger, model, processor, device)
             end_time = time.time()
 
             # Calculate and display execution time
