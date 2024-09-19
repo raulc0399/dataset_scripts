@@ -96,9 +96,14 @@ if __name__ == "__main__":
         image_files = sorted(image_files)[:10]
 
     # Split image files into two batches
-    mid_index = len(image_files) // 2
-    batch_0_files = image_files[:mid_index]
-    batch_1_files = image_files[mid_index:]
+    if args.num_gpus == 1:
+        batch_0_files = image_files
+        batch_1_files = []
+    else:
+        mid_index = len(image_files) // 2
+        batch_0_files = image_files[:mid_index]
+        batch_1_files = image_files[mid_index:]
+    
     total_time = 0
     num_images = 0
 
