@@ -74,6 +74,8 @@ if __name__ == "__main__":
     image_dir = args.image_dir
     image_files = [f for f in os.listdir(image_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif', '.tiff'))]
 
+    print(f"Found {len(image_files)} images in {image_dir}")
+
     # Filter out images that already have a caption file
     if not args.test_run:
         image_files = [
@@ -82,6 +84,8 @@ if __name__ == "__main__":
                 os.path.join(args.output_dir or image_dir, os.path.splitext(f)[0] + "_llava" + ".txt")
             )
         ]
+
+        print(f"afte filter {len(image_files)}")
 
     # Limit the number of images if test_run is enabled
     if args.test_run:
