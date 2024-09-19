@@ -6,6 +6,7 @@ import time
 import argparse
 from tqdm import tqdm
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 max_new_tokens = 500
 
@@ -89,16 +90,13 @@ if __name__ == "__main__":
     else:
         f = None
 
-    # Process each batch
-    for batch_index, (batch_files, model, processor, device) in enumerate(
-        [(batch_0_files, llava_model_0, llava_processor_0, "cuda:0"), 
-         (batch_1_files, llava_model_1, llava_processor_1, "cuda:1")]):
-        
+    # Function to process a batch
+    def process_batch(batch_files, model, processor, device, batch_index, total_time, num_images):
         print(f"Processing batch {batch_index + 1} with {len(batch_files)} images on {device}...")
 
         for image_file in tqdm(batch_files, desc=f"Processing batch {batch_index + 1}"):
             image_path = os.path.join(image_dir, image_file)
-            
+
             # Save caption to a file with the same name but with .txt extension
             suffix = "_llava" if args.test_run else ""
             if args.output_dir:
@@ -121,13 +119,29 @@ if __name__ == "__main__":
             if f:
                 f.write(f"--- Image: {image_file}, Execution Time: {exec_time:.2f} seconds\n")
                 f.write(f"{caption}\n\n")
-                
+
             with open(caption_file_path, "w") as caption_file:
                 caption_file.write(caption)
-            
+
             # Accumulate total time and count
-            total_time += exec_time
-            num_images += 1
+            batch_total_time += exec_time
+            batch_num_images += 1
+
+        return batch_total_time, batch_num_images
+
+    # Initialize total_time and num_images
+    total_time = 0
+    num_images = 0
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        futures = [
+            executor.submit(process_batch, batch_0_files, llava_model_0, llava_processor_0, "cuda:0", 0, total_time, num_images),
+            executor.submit(process_batch, batch_1_files, llava_model_1, llava_processor_1, "cuda:1", 1, total_time, num_images)
+        ]
+
+        for future in as_completed(futures):
+            batch_total_time, batch_num_images = future.result()
+            total_time += batch_total_time
+            num_images += batch_num_images
 
     # Calculate and display average execution time
     avg_time = total_time / num_images
