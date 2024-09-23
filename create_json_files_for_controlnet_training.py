@@ -1,13 +1,16 @@
 import os
 import json
 import argparse
+from tqdm import tqdm
 
 # from metadata.jsonl, create json files for each image, as dataset for training controlnet with xflux
 def create_json_files_from_metadata(folder_path):
     metadata_file = os.path.join(folder_path, 'metadata.jsonl')
     
     with open(metadata_file, 'r') as file:
-        for line in file:
+        lines = file.readlines()
+        
+    for line in tqdm(lines, desc="Processing entries"):
             entry = json.loads(line)
             image_name = entry['image']
             conditioning_image = entry['conditioning_image']
