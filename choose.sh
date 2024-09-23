@@ -37,7 +37,7 @@ for i in $(shuf -i 0-$((${#files[@]} - 1)) -n $num_files); do
     echo "Copied ${files[i]} to $subdir_simple/"
 
     # Determine the corresponding .txt file name
-    txt_file="${files[i]%.png}.txt"
+    txt_file="$(basename "${files[i]%.png}.txt")"
 
     # Copy the .txt file from simple to subdir_simple
     cp "simple/$txt_file" "$subdir_simple/"
