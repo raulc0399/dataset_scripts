@@ -8,4 +8,4 @@ IMAGE_DIR="../teenyicons/to_train"
 TEST_RUN=true
 
 # Run the simple caption generation script
-python simple_caption.py --trigger "$TRIGGER" --image-dir "$NEW_IMAGE_DIR" $( [ "$TEST_RUN" = true ] && echo "--test-run" )
+python simple_caption.py --trigger "$TRIGGER" --image-dir "$IMAGE_DIR" $( [ "$TEST_RUN" = true ] && echo "--test-run" )
