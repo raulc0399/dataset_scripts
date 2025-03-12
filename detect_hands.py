@@ -54,9 +54,11 @@ def draw_landmarks_on_image(rgb_image, detection_result):
   # Convert back to RGB before returning
   return cv2.cvtColor(annotated_image, cv2.COLOR_BGR2RGB)
 
-def landmarks_to_dict(detection_result):
+def landmarks_to_dict(detection_result, height, width):
     """Convert hand landmarks to a serializable dictionary format."""
     result = []
+    
+    # Use the provided image dimensions for converting normalized coordinates to pixels
     
     for idx in range(len(detection_result.hand_landmarks)):
         hand_landmarks = detection_result.hand_landmarks[idx]
@@ -65,13 +67,13 @@ def landmarks_to_dict(detection_result):
         landmarks_list = []
         for landmark in hand_landmarks:
             landmarks_list.append({
-                'x': float(landmark.x),
-                'y': float(landmark.y),
+                'x': int(landmark.x * width),  # Convert to pixel values
+                'y': int(landmark.y * height), # Convert to pixel values
                 # 'z': float(landmark.z)
             })
         
         hand_data = {
-            'type': handedness[0].category_name,
+            'type': handedness[0].category_name.lower(),  # Convert to lowercase
             # 'score': float(handedness[0].score),
             'keypoints': landmarks_list
         }
@@ -97,8 +99,11 @@ image = mp.Image.create_from_file(image_path)
 # Detect hand landmarks from the input image.
 detection_result = detector.detect(image)
 
+# Get image dimensions
+image_height, image_width, _ = image.numpy_view().shape
+
 # Save landmarks to JSON file
-landmarks_dict = landmarks_to_dict(detection_result)
+landmarks_dict = landmarks_to_dict(detection_result, image_height, image_width)
 json_path = os.path.splitext(image_path)[0] + "_landmarks.json"
 with open(json_path, 'w') as f:
     json.dump(landmarks_dict, f, indent=2)
