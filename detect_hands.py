@@ -17,7 +17,8 @@ HANDEDNESS_TEXT_COLOR = (88, 205, 54) # vibrant green
 def draw_landmarks_on_image(rgb_image, detection_result):
   hand_landmarks_list = detection_result.hand_landmarks
   handedness_list = detection_result.handedness
-  annotated_image = np.copy(rgb_image)
+  # Convert RGB to BGR for MediaPipe drawing utilities
+  annotated_image = cv2.cvtColor(np.copy(rgb_image), cv2.COLOR_RGB2BGR)
 
   # Loop through the detected hands to visualize.
   for idx in range(len(hand_landmarks_list)):
@@ -48,7 +49,8 @@ def draw_landmarks_on_image(rgb_image, detection_result):
                 (text_x, text_y), cv2.FONT_HERSHEY_DUPLEX,
                 FONT_SIZE, HANDEDNESS_TEXT_COLOR, FONT_THICKNESS, cv2.LINE_AA)
 
-  return annotated_image
+  # Convert back to RGB before returning
+  return cv2.cvtColor(annotated_image, cv2.COLOR_BGR2RGB)
 
 
 import mediapipe as mp
@@ -70,6 +72,6 @@ detection_result = detector.detect(image)
 # STEP 5: Process the classification result. In this case, visualize it.
 annotated_image = draw_landmarks_on_image(image.numpy_view(), detection_result)
 
-cv2.imshow('Annotated Image', cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR))
+cv2.imshow('Annotated Image', annotated_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
