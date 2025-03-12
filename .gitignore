@@ -2,3 +2,4 @@
 test_images
 *.zip
 .aider*
+models/
