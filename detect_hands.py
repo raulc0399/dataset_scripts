@@ -91,7 +91,7 @@ options = vision.HandLandmarkerOptions(base_options=base_options,
 detector = vision.HandLandmarker.create_from_options(options)
 
 # Load the input image.
-image_path = "./test_images/input1.png"
+image_path = "./test_images/3.png"
 image = mp.Image.create_from_file(image_path)
 
 # Detect hand landmarks from the input image.
@@ -100,9 +100,11 @@ detection_result = detector.detect(image)
 # Get image dimensions
 image_height, image_width, _ = image.numpy_view().shape
 
+base_name = os.path.splitext(image_path)[0]
+
 # Save landmarks to JSON file
 landmarks_dict = landmarks_to_dict(detection_result, image_height, image_width)
-json_path = os.path.splitext(image_path)[0] + "_landmarks.json"
+json_path = base_name + "_landmarks.json"
 with open(json_path, 'w') as f:
     json.dump(landmarks_dict, f, indent=2)
 
@@ -111,6 +113,12 @@ print(f"Landmarks saved to {json_path}")
 # Process the classification result. In this case, visualize it and save to JSON.
 annotated_image = draw_landmarks_on_image(image.numpy_view(), detection_result)
 
-cv2.imshow('Annotated Image', annotated_image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# Save the annotated image to a file
+annotated_image_path = base_name + "_landmarks.png"
+cv2.imwrite(annotated_image_path, cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR))
+
+print(f"Annotated image saved to {annotated_image_path}")
+
+# cv2.imshow('Annotated Image', annotated_image)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
