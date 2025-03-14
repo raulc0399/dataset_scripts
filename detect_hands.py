@@ -9,8 +9,6 @@ import cv2
 import json
 import os
 
-model_path = '/absolute/path/to/gesture_recognizer.task'
-
 MARGIN = 10  # pixels
 FONT_SIZE = 1
 FONT_THICKNESS = 1
