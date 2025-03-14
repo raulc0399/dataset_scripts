@@ -8,13 +8,19 @@ import numpy as np
 import cv2
 import json
 import os
+from enum import Enum, auto
 
 MARGIN = 10  # pixels
 FONT_SIZE = 1
 FONT_THICKNESS = 1
 HANDEDNESS_TEXT_COLOR = (88, 205, 54) # vibrant green
 
-def draw_landmarks_on_image(rgb_image, detection_result):
+class HandFilter(Enum):
+    RIGHT = "right"
+    LEFT = "left"
+    BOTH = "both"
+
+def draw_landmarks_on_image(rgb_image, detection_result, hand_filter=HandFilter.BOTH):
   hand_landmarks_list = detection_result.hand_landmarks
   handedness_list = detection_result.handedness
   # Convert RGB to BGR for MediaPipe drawing utilities
@@ -24,6 +30,11 @@ def draw_landmarks_on_image(rgb_image, detection_result):
   for idx in range(len(hand_landmarks_list)):
     hand_landmarks = hand_landmarks_list[idx]
     handedness = handedness_list[idx]
+    
+    # Skip hands that don't match the filter
+    current_hand_type = handedness[0].category_name.lower()
+    if  hand_filter != HandFilter.BOTH and current_hand_type != hand_filter.value:
+        continue
 
     # Draw the hand landmarks.
     hand_landmarks_proto = landmark_pb2.NormalizedLandmarkList()
@@ -110,14 +121,15 @@ with open(json_path, 'w') as f:
 
 print(f"Landmarks saved to {json_path}")
 
-# Process the classification result. In this case, visualize it and save to JSON.
-annotated_image = draw_landmarks_on_image(image.numpy_view(), detection_result)
-
-# Save the annotated image to a file
-annotated_image_path = base_name + "_landmarks.png"
-cv2.imwrite(annotated_image_path, cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR))
-
-print(f"Annotated image saved to {annotated_image_path}")
+# Process the classification result for each hand filter type
+for hand_filter in HandFilter:
+    annotated_image = draw_landmarks_on_image(image.numpy_view(), detection_result, hand_filter)
+    
+    # Save the annotated image to a file with the hand filter type in the filename
+    annotated_image_path = f"{base_name}_{hand_filter.value}_landmarks.png"
+    cv2.imwrite(annotated_image_path, cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR))
+    
+    print(f"Annotated image saved to {annotated_image_path}")
 
 # cv2.imshow('Annotated Image', annotated_image)
 # cv2.waitKey(0)
