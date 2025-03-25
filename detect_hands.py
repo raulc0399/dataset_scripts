@@ -111,11 +111,13 @@ detection_result = detector.detect(image)
 # Get image dimensions
 image_height, image_width, _ = image.numpy_view().shape
 
-base_name = os.path.splitext(image_path)[0]
+output_dir = os.path.join(os.path.dirname(image_path), "output")
+os.makedirs(output_dir, exist_ok=True)
+base_name = os.path.join(output_dir, os.path.splitext(os.path.basename(image_path))[0])
 
 # Save landmarks to JSON file
 landmarks_dict = landmarks_to_dict(detection_result, image_height, image_width)
-json_path = base_name + "_landmarks.json"
+json_path = os.path.join(output_dir, os.path.basename(base_name) + "_landmarks.json")
 with open(json_path, 'w') as f:
     json.dump(landmarks_dict, f, indent=2)
 
@@ -126,7 +128,7 @@ for hand_filter in HandFilter:
     annotated_image = draw_landmarks_on_image(image.numpy_view(), detection_result, hand_filter)
     
     # Save the annotated image to a file with the hand filter type in the filename
-    annotated_image_path = f"{base_name}_{hand_filter.value}_landmarks.png"
+    annotated_image_path = os.path.join(output_dir, f"{os.path.basename(base_name)}_{hand_filter.value}_landmarks.png")
     cv2.imwrite(annotated_image_path, cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR))
     
     print(f"Annotated image saved to {annotated_image_path}")
