@@ -1,5 +1,6 @@
 .venv
 test_images
+images
 *.zip
 .aider*
 models/
