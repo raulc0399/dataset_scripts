@@ -3,6 +3,7 @@ from PIL import Image
 import os
 import tqdm
 import json
+import torch
 
 model_id = "YannQi/R-4B"
 
