@@ -6,16 +6,14 @@ import json
 import torch
 from qwen_vl_utils import process_vision_info
 
-model_id = "Qwen/Qwen3-VL-8B-Instruct-FP8"
-# model_id = "Qwen/Qwen3-VL-8B-Thinking-FP8"
-# model_id = "Qwen/Qwen3-VL-8B-Instruct"
+model_id = "Qwen/Qwen3-VL-8B-Instruct"
 # model_id = "Qwen/Qwen3-VL-8B-Thinking"
     
 model = Qwen3VLForConditionalGeneration.from_pretrained(
     model_id,
     torch_dtype="auto",
     device_map="auto",
-    attn_implementation="flash_attention_2"
+    # attn_implementation="flash_attention_2"
 ).to("cuda")
 
 # Load processor
@@ -43,6 +41,7 @@ def process_image(image_path: str, prompt: str) -> str:
         return_dict=True,
         return_tensors="pt"
     )
+    print("chat template:", inputs)
     inputs = inputs.to(model.device)
 
     # Inference: Generation of the output
