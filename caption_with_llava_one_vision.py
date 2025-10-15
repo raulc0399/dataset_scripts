@@ -27,7 +27,7 @@ def process_image(image_path: str, prompt: str) -> str:
             "content": [
                 {
                     "type": "image",
-                    "image": "",
+                    "image": image_path,
                 },
                 {"type": "text", "text": prompt},
             ],

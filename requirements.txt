@@ -11,4 +11,4 @@ controlnet-aux
 mediapipe
 pyvips
 fastparquet
-mediapipe
+qwen_vl_utils
