@@ -9,7 +9,8 @@ model_id = "YannQi/R-4B"
 
 model = AutoModel.from_pretrained(
     model_id,
-    torch_dtype=torch.float32,
+    torch_dtype="auto",
+    device_map="auto",
     trust_remote_code=True,
 ).to("cuda")
 
@@ -24,7 +25,7 @@ def process_image(image_path: str, prompt: str) -> str:
             "content": [
                 {
                     "type": "image",
-                    "image": "",
+                    "image": image_path,
                 },
                 {"type": "text", "text": prompt},
             ],

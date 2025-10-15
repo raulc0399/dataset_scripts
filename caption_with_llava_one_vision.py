@@ -62,6 +62,9 @@ def process_image(image_path: str, prompt: str) -> str:
         generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
     )
 
+    print("output text:", output_text)
+    exit(0)
+
     return output_text.strip()
 
 # List all files in the test_images directory
@@ -76,7 +79,7 @@ def save_metadata(metadata):
 
 metadata = []
 
-prompt = "Describe this image."
+prompt = "does the image show a modern building? answer yes or no."
 
 # Process each image file
 for index, image_file in enumerate(tqdm.tqdm(image_files)):
