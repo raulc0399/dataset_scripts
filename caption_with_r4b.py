@@ -41,6 +41,8 @@ def process_image(image_path: str, prompt: str) -> str:
 
     print("chat template:", text)
 
+    image = Image.open(image_path)
+
     # Process inputs
     inputs = processor(
         images=image,
