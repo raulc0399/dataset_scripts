@@ -4,14 +4,16 @@ import os
 import tqdm
 import json
 
+model_id = "YannQi/R-4B"
+
 model = AutoModel.from_pretrained(
-    model_path,
+    model_id,
     torch_dtype=torch.float32,
     trust_remote_code=True,
 ).to("cuda")
 
 # Load processor
-processor = AutoProcessor.from_pretrained(model_path, trust_remote_code=True)
+processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
 
 def process_image(image_path: str, prompt: str) -> str:
     # Define conversation messages
@@ -36,6 +38,8 @@ def process_image(image_path: str, prompt: str) -> str:
         thinking_mode="auto"
     )
 
+    print("chat template:", text)
+
     # Process inputs
     inputs = processor(
         images=image,
@@ -53,6 +57,8 @@ def process_image(image_path: str, prompt: str) -> str:
         skip_special_tokens=True,
         clean_up_tokenization_spaces=False
     )
+    
+    return output_text.strip()
 
 # List all files in the test_images directory
 image_dir = "./images"
