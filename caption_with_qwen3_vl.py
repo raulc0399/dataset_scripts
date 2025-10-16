@@ -41,7 +41,7 @@ def process_image(image_path: str, prompt: str) -> str:
         return_dict=True,
         return_tensors="pt"
     )
-    print("chat template:", inputs)
+    # print("chat template:", inputs)
     inputs = inputs.to(model.device)
 
     # Inference: Generation of the output
@@ -53,7 +53,7 @@ def process_image(image_path: str, prompt: str) -> str:
         generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
     )
 
-    print("output text:", output_text)
+    # print("output text:", output_text)
 
     return output_text[0].strip() if output_text else ""
 

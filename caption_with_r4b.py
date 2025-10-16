@@ -40,7 +40,7 @@ def process_image(image_path: str, prompt: str) -> str:
         thinking_mode="auto"
     )
 
-    print("chat template:", text)
+    # print("chat template:", text)
 
     image = Image.open(image_path)
 

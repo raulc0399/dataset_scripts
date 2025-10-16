@@ -41,7 +41,7 @@ def process_image(image_path: str, prompt: str) -> str:
         add_generation_prompt=True
     )
 
-    print("chat template:", text)
+    # print("chat template:", text)
 
     image_inputs, video_inputs = process_vision_info(messages)
     inputs = processor(
@@ -62,7 +62,7 @@ def process_image(image_path: str, prompt: str) -> str:
         generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
     )
 
-    print("output text:", output_text)
+    # print("output text:", output_text)
 
     return output_text[0].strip() if output_text else ""
 

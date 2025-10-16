@@ -5,8 +5,8 @@ import os
 import tqdm
 import json
 
-model_name = "gemini-2.5-flash"
-# model_name = "gemini-2.5-pro"
+# model_name = "gemini-2.5-flash"
+model_name = "gemini-2.5-pro"
 client = genai.Client()
 
 def process_image(image_path: str, prompt: str) -> str:
@@ -27,7 +27,7 @@ def process_image(image_path: str, prompt: str) -> str:
         )
         
         output_text = response.text
-        print("output text:", output_text)
+        # print("output text:", output_text)
         
         return output_text.strip()
     

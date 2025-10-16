@@ -7,9 +7,9 @@ import base64
 from io import BytesIO
 
 # model="o4-mini"
-model="gpt-4o-mini"
+# model="gpt-4o-mini"
 # model="gpt-5-mini"
-# model="gpt-5"
+model="gpt-5"
 
 # Set up OpenAI client
 client = openai.OpenAI()
@@ -49,7 +49,7 @@ def process_image(image_path: str, prompt: str) -> str:
         )
         
         output_text = response.choices[0].message.content
-        print("output text:", output_text)
+        # print("output text:", output_text)
         
         return output_text.strip()
     
