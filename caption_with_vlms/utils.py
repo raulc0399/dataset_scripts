@@ -4,7 +4,15 @@ import tqdm
 
 def get_image_files(image_dir="./images"):
     """Get list of image files from directory"""
-    return os.listdir(image_dir)
+    image_extensions = {'.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff', '.webp'}
+    files = []
+    for item in os.listdir(image_dir):
+        item_path = os.path.join(image_dir, item)
+        if os.path.isfile(item_path):
+            _, ext = os.path.splitext(item.lower())
+            if ext in image_extensions:
+                files.append(item)
+    return files
 
 def load_or_create_metadata(image_files):
     """Load existing metadata or create new structure"""
