@@ -7,7 +7,8 @@ import base64
 from io import BytesIO
 
 # model="gpt-4-vision-preview"
-model="gpt-5-mini"
+# model="gpt-5-mini"
+model="gpt-5"
 
 # Set up OpenAI client
 client = openai.OpenAI()
