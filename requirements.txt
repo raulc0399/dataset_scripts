@@ -13,3 +13,4 @@ pyvips
 fastparquet
 qwen_vl_utils
 openai
+google-genai
