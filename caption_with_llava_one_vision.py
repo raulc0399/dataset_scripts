@@ -63,38 +63,54 @@ def process_image(image_path: str, prompt: str) -> str:
     )
 
     print("output text:", output_text)
-    exit(0)
 
-    return output_text.strip()
+    return output_text[0].strip() if output_text else ""
 
 # List all files in the test_images directory
 image_dir = "./images"
 image_files = os.listdir(image_dir)
 
-def save_metadata(metadata):
-    with open("metadata.jsonl", "a") as f:
-        for item in metadata:
-            json_line = json.dumps(item)
-            f.write(json_line + '\n')
+def load_or_create_metadata():
+    """Load existing metadata or create new structure"""
+    if os.path.exists("metadata.json"):
+        with open("metadata.json", "r") as f:
+            return json.load(f)
+    else:
+        # Create base structure with all image files
+        metadata = {}
+        for image_file in image_files:
+            metadata[image_file] = {"file_name": image_file}
+        return metadata
 
-metadata = []
+def save_metadata(metadata):
+    """Save metadata to JSON file"""
+    with open("metadata.json", "w") as f:
+        json.dump(metadata, f, indent=2)
+
+# Load or create metadata structure
+metadata = load_or_create_metadata()
 
 prompt = "does the image show a modern building? answer yes or no."
 
 # Process each image file
-for index, image_file in enumerate(tqdm.tqdm(image_files)):
+for image_file in tqdm.tqdm(image_files):
+    if image_file not in metadata:
+        metadata[image_file] = {"file_name": image_file}
+    
+    # Skip if this model's caption already exists
+    if "llava_one_vision_caption" in metadata[image_file]:
+        print(f"Skipping {image_file} - LLaVA-OneVision caption already exists")
+        continue
+    
     image_path = os.path.join(image_dir, image_file)
     
     caption = process_image(image_path, prompt)
     print(f"Image: {image_file}, Caption: {caption}")
 
-    metadata.append({
-        "file_name": image_file,
-        "caption": caption
-    })
-
-    if index % 100 == 0:
-        save_metadata(metadata)
-        metadata = []
+    metadata[image_file]["llava_one_vision_caption"] = caption
     
+    # Save periodically
+    if len([f for f in metadata if "llava_one_vision_caption" in metadata[f]]) % 10 == 0:
+        save_metadata(metadata)
+
 save_metadata(metadata)
