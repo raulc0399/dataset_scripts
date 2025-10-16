@@ -4,3 +4,4 @@ images
 *.zip
 .aider*
 models/
+__pycache__
