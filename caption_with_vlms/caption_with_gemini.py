@@ -2,8 +2,8 @@ from google import genai
 from google.genai import types
 from utils import get_image_files, load_or_create_metadata, process_images
 
-# model_name = "gemini-2.5-flash"
-model_name = "gemini-2.5-pro"
+model_name = "gemini-2.5-flash"
+# model_name = "gemini-2.5-pro"
 client = genai.Client()
 
 def process_image(image_path: str, prompt: str) -> str:
