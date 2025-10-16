@@ -1,10 +1,6 @@
 from transformers import Qwen3VLForConditionalGeneration, AutoProcessor
-from PIL import Image
-import os
-import tqdm
-import json
 import torch
-from qwen_vl_utils import process_vision_info
+from utils import get_image_files, load_or_create_metadata, process_images
 
 model_id = "Qwen/Qwen3-VL-8B-Instruct"
 # model_id = "Qwen/Qwen3-VL-8B-Thinking"
@@ -57,58 +53,9 @@ def process_image(image_path: str, prompt: str) -> str:
 
     return output_text[0].strip() if output_text else ""
 
-# List all files in the test_images directory
-image_dir = "./images"
-image_files = os.listdir(image_dir)
-
-def load_or_create_metadata():
-    """Load existing metadata or create new structure"""
-    output_dir = "images/output"
-    os.makedirs(output_dir, exist_ok=True)
-    metadata_path = os.path.join(output_dir, "metadata.json")
+if __name__ == "__main__":
+    image_files = get_image_files("./images")
+    metadata = load_or_create_metadata(image_files)
+    prompt = "describe this image."
     
-    if os.path.exists(metadata_path):
-        with open(metadata_path, "r") as f:
-            return json.load(f)
-    else:
-        # Create base structure with all image files
-        metadata = {}
-        for image_file in image_files:
-            metadata[image_file] = {"file_name": image_file}
-        return metadata
-
-def save_metadata(metadata):
-    """Save metadata to JSON file"""
-    output_dir = "images/output"
-    os.makedirs(output_dir, exist_ok=True)
-    metadata_path = os.path.join(output_dir, "metadata.json")
-    with open(metadata_path, "w") as f:
-        json.dump(metadata, f, indent=2)
-
-# Load or create metadata structure
-metadata = load_or_create_metadata()
-
-prompt = "describe this image."
-
-# Process each image file
-for image_file in tqdm.tqdm(image_files):
-    if image_file not in metadata:
-        metadata[image_file] = {"file_name": image_file}
-    
-    # Skip if this model's caption already exists
-    if "qwen3_vl_caption" in metadata[image_file]:
-        print(f"Skipping {image_file} - Qwen3-VL caption already exists")
-        continue
-    
-    image_path = os.path.join(image_dir, image_file)
-    
-    caption = process_image(image_path, prompt)
-    print(f"Image: {image_file}, Caption: {caption}")
-
-    metadata[image_file]["qwen3_vl_caption"] = caption
-    
-    # Save periodically
-    if len([f for f in metadata if "qwen3_vl_caption" in metadata[f]]) % 10 == 0:
-        save_metadata(metadata)
-
-save_metadata(metadata)
+    process_images(image_files, metadata, process_image, "qwen3_vl_caption", prompt, "./images")
