@@ -63,8 +63,12 @@ image_files = os.listdir(image_dir)
 
 def load_or_create_metadata():
     """Load existing metadata or create new structure"""
-    if os.path.exists("metadata.json"):
-        with open("metadata.json", "r") as f:
+    output_dir = "images/output"
+    os.makedirs(output_dir, exist_ok=True)
+    metadata_path = os.path.join(output_dir, "metadata.json")
+    
+    if os.path.exists(metadata_path):
+        with open(metadata_path, "r") as f:
             return json.load(f)
     else:
         # Create base structure with all image files
@@ -75,7 +79,10 @@ def load_or_create_metadata():
 
 def save_metadata(metadata):
     """Save metadata to JSON file"""
-    with open("metadata.json", "w") as f:
+    output_dir = "images/output"
+    os.makedirs(output_dir, exist_ok=True)
+    metadata_path = os.path.join(output_dir, "metadata.json")
+    with open(metadata_path, "w") as f:
         json.dump(metadata, f, indent=2)
 
 # Load or create metadata structure
