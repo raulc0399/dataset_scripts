@@ -1,22 +1,30 @@
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from PIL import Image
 import os
 import tqdm
 import json
 
-# Configure Gemini
-model_name = "gemini-2.0-flash-exp"
-
-genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
-model = genai.GenerativeModel(model_name)
+model_name = "gemini-2.5-flash"
+# model_name = "gemini-2.5-pro"
+client = genai.Client()
 
 def process_image(image_path: str, prompt: str) -> str:
     try:
-        # Load image
-        image = Image.open(image_path)
+        with open(image_path, 'rb') as f:
+            image_bytes = f.read()
         
         # Generate content with Gemini
-        response = model.generate_content([prompt, image])
+        response = client.models.generate_content(
+            model=model_name,
+            contents=[
+            types.Part.from_bytes(
+                data=image_bytes,
+                mime_type='image/jpeg',
+            ),
+            prompt
+            ]
+        )
         
         output_text = response.text
         print("output text:", output_text)
