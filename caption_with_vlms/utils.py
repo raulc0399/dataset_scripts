@@ -7,9 +7,8 @@ TASKS = {
     "architecture_detection": {
         "system_prompt": "You are an expert architectural analyst.",
         "prompts": {
-            "identify_style": "Identify the architectural style of this building.",
-            "detect_elements": "List the main architectural elements visible in this image.",
-            "classify_building": "What type of building is shown in this image?"
+            "p1": "Determine if the given image **depicts architecture (a building, structure, architectural feature)** Please answer with \"Yes\" or \"No\". Then briefly justify your answer (1–2 sentences).",
+            "p2": "Rate from 0-10 how related this image is to architecture (buildings, structural design, interior spaces, architectural elements).",
         }
     },
     "image_quality": {
