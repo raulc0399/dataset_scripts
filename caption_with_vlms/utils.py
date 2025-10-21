@@ -55,22 +55,15 @@ def process_images_with_prompts(image_files, metadata, process_func, model_name,
         print(f"\nProcessing with prompt '{prompt_key}': {prompt_text}")
         
         # Create a wrapper function that adds prompt info to the output
+        # Use default parameter to capture prompt_key by value
         def process_func_with_prompt_info(image_path, prompt):
             caption = process_func(image_path, prompt)
-            return {
-                "caption": caption,
-                "prompt": prompt,
-                "prompt_key": prompt_key
-            }
+            return caption
         
         # Use existing process_images function
         process_images(image_files, metadata, process_func_with_prompt_info, caption_key, prompt_text, image_dir)
 
-def process_images(image_files, metadata, process_func, caption_key, prompt=None, image_dir="./images"):
-    """Generic function to process images with any model (backward compatibility)"""
-    if prompt is None:
-        prompt = DEFAULT_PROMPTS["describe"]
-
+def process_images(image_files, metadata, process_func, caption_key, prompt, image_dir="./images"):
     # Process each image file
     for image_file in tqdm.tqdm(image_files):
         if image_file not in metadata:
@@ -83,11 +76,11 @@ def process_images(image_files, metadata, process_func, caption_key, prompt=None
         
         image_path = os.path.join(image_dir, image_file)
         
-        caption = process_func(image_path, prompt)
-        print(f"Image: {image_file}, Caption: {caption}")
+        result = process_func(image_path, prompt)
+        metadata[image_file][caption_key] = result
+                    
+        print(f"Image: {image_file}, Caption: {result}")
 
-        metadata[image_file][caption_key] = caption
-        
         # Save periodically
         if len([f for f in metadata if caption_key in metadata[f]]) % 10 == 0:
             save_metadata(metadata)
