@@ -5,8 +5,7 @@ import tqdm
 # Default prompts for different models
 DEFAULT_PROMPTS = {
     "describe": "describe this image.",
-    "modern_building": "does the image show a modern building? answer yes or no.",
-    "detailed": "Describe this image in detail.",
+    "modern_building": "does the image show a modern building? answer yes or no."
 }
 
 def get_image_files(image_dir="./images"):
