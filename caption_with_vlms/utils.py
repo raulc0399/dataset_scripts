@@ -31,28 +31,28 @@ TASKS = {
                    "Rate: excellent/good/poor.")
         }
     },
-    "architect_description": {
-        "system_prompt": ("You are a professional architect tasked with analyzing and describing architectural images "
-                         "for expert reference and dataset enrichment."),
-        "prompts": {
-            "p1": ("Describe the architectural elements in this image: building type, style, materials, and notable structural or design features. Be specific about materials and structural systems."),
-            "p2": ("Describe this architecture image including:"
-                    "1. What type of structure (residential, commercial, etc.)"
-                    "2. Architectural style/period if identifiable"
-                    "3. Primary materials and construction methods"
-                    "4. Key elements: [roof type, window styles, columns, arches, walls, floors, stairs, openings]"
-                    "5. Distinctive features or details"),
-            "p3": ("Describe the visible building and environment elements in the given image according to the list below. "
-                   "For each element, identify whether it is visible, partially visible, or not visible, and when visible, "
-                   "describe its material and notable characteristics (form, color, texture, condition, integration). "
-                   "Be concise, objective, and rely only on what is visually evident.\n"
-                   "Describe only elements that are visible or inferable from the image."
-                   "Use the provided material examples as reference categories, not exhaustive lists."
-                   "Avoid assumptions; if uncertain, set \"visibility\": \"uncertain\"."
-                   "Maintain consistent terminology and lowercase materials."
-                   "Focus on architectural accuracy, not artistic interpretation."),            
-        }
-    }
+    # "architect_description": {
+    #     "system_prompt": ("You are a professional architect tasked with analyzing and describing architectural images "
+    #                      "for expert reference and dataset enrichment."),
+    #     "prompts": {
+    #         "p1": ("Describe the architectural elements in this image: building type, style, materials, and notable structural or design features. Be specific about materials and structural systems."),
+    #         "p2": ("Describe this architecture image including:"
+    #                 "1. What type of structure (residential, commercial, etc.)"
+    #                 "2. Architectural style/period if identifiable"
+    #                 "3. Primary materials and construction methods"
+    #                 "4. Key elements: [roof type, window styles, columns, arches, walls, floors, stairs, openings]"
+    #                 "5. Distinctive features or details"),
+    #         "p3": ("Describe the visible building and environment elements in the given image according to the list below. "
+    #                "For each element, identify whether it is visible, partially visible, or not visible, and when visible, "
+    #                "describe its material and notable characteristics (form, color, texture, condition, integration). "
+    #                "Be concise, objective, and rely only on what is visually evident.\n"
+    #                "Describe only elements that are visible or inferable from the image."
+    #                "Use the provided material examples as reference categories, not exhaustive lists."
+    #                "Avoid assumptions; if uncertain, set \"visibility\": \"uncertain\"."
+    #                "Maintain consistent terminology and lowercase materials."
+    #                "Focus on architectural accuracy, not artistic interpretation."),            
+    #     }
+    # }
 }
 
 def get_image_files(image_dir="./images"):
@@ -106,7 +106,8 @@ def process_images_with_tasks(image_files, metadata, process_func, model_name, i
         # Process each prompt within the task
         for prompt_key, prompt_text in prompts.items():
             caption_key = f"{model_name}_{task_name}_{prompt_key}_caption"
-            print(f"\nProcessing prompt '{prompt_key}': {prompt_text}")
+            # print(f"\nProcessing prompt '{prompt_key}': {prompt_text}")
+            print(f"\nProcessing prompt '{prompt_key}'")
             
             # Use existing process_images function
             process_images(image_files, metadata, process_func, caption_key, prompt_text, image_dir, system_prompt)
