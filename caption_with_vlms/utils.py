@@ -8,6 +8,13 @@ DEFAULT_PROMPTS = {
     "modern_building": "does the image show a modern building? answer yes or no."
 }
 
+# Default system prompts for different use cases
+DEFAULT_SYSTEM_PROMPTS = {
+    "architecture_detection": "You are an expert architectural analyst.",
+    "image_quality": "You are a professional image quality assessor for architectural images.",
+    "architect_description": "You are a professional architect tasked with analyzing and describing architectural images for expert reference and dataset enrichment."
+}
+
 def get_image_files(image_dir="./images"):
     """Get list of image files from directory"""
     image_extensions = {'.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff', '.webp'}
@@ -44,7 +51,7 @@ def save_metadata(metadata):
     with open(metadata_path, "w") as f:
         json.dump(metadata, f, indent=2)
 
-def process_images_with_prompts(image_files, metadata, process_func, model_name, image_dir="./images"):
+def process_images_with_prompts(image_files, metadata, process_func, model_name, image_dir="./images", system_prompt=None):
     """Generic function to process images with any model using multiple prompts"""
     prompts = DEFAULT_PROMPTS
 
@@ -55,14 +62,14 @@ def process_images_with_prompts(image_files, metadata, process_func, model_name,
         
         # Create a wrapper function that adds prompt info to the output
         # Use default parameter to capture prompt_key by value
-        def process_func_with_prompt_info(image_path, prompt):
-            caption = process_func(image_path, prompt)
+        def process_func_with_prompt_info(image_path, prompt, sys_prompt=system_prompt):
+            caption = process_func(image_path, prompt, sys_prompt)
             return caption
         
         # Use existing process_images function
-        process_images(image_files, metadata, process_func_with_prompt_info, caption_key, prompt_text, image_dir)
+        process_images(image_files, metadata, process_func_with_prompt_info, caption_key, prompt_text, image_dir, system_prompt)
 
-def process_images(image_files, metadata, process_func, caption_key, prompt, image_dir="./images"):
+def process_images(image_files, metadata, process_func, caption_key, prompt, image_dir="./images", system_prompt=None):
     # Process each image file
     for image_file in tqdm.tqdm(image_files):
         if image_file not in metadata:
@@ -75,7 +82,7 @@ def process_images(image_files, metadata, process_func, caption_key, prompt, ima
         
         image_path = os.path.join(image_dir, image_file)
         
-        result = process_func(image_path, prompt)
+        result = process_func(image_path, prompt, system_prompt)
         metadata[image_file][caption_key] = result
                     
         print(f"Image: {image_file}, Caption: {result}")
