@@ -2,6 +2,13 @@ import os
 import json
 import tqdm
 
+# Default prompts for different models
+DEFAULT_PROMPTS = {
+    "describe": "describe this image.",
+    "modern_building": "does the image show a modern building? answer yes or no.",
+    "detailed": "Describe this image in detail.",
+}
+
 def get_image_files(image_dir="./images"):
     """Get list of image files from directory"""
     image_extensions = {'.jpg', '.jpeg', '.png', '.bmp', '.gif', '.tiff', '.webp'}
@@ -38,8 +45,32 @@ def save_metadata(metadata):
     with open(metadata_path, "w") as f:
         json.dump(metadata, f, indent=2)
 
-def process_images(image_files, metadata, process_func, caption_key, prompt="describe this image.", image_dir="./images"):
-    """Generic function to process images with any model"""
+def process_images_with_prompts(image_files, metadata, process_func, model_name, image_dir="./images"):
+    """Generic function to process images with any model using multiple prompts"""
+    prompts = DEFAULT_PROMPTS
+
+    # Process each prompt
+    for prompt_key, prompt_text in prompts.items():
+        caption_key = f"{model_name}_{prompt_key}_caption"
+        print(f"\nProcessing with prompt '{prompt_key}': {prompt_text}")
+        
+        # Create a wrapper function that adds prompt info to the output
+        def process_func_with_prompt_info(image_path, prompt):
+            caption = process_func(image_path, prompt)
+            return {
+                "caption": caption,
+                "prompt": prompt,
+                "prompt_key": prompt_key
+            }
+        
+        # Use existing process_images function
+        process_images(image_files, metadata, process_func_with_prompt_info, caption_key, prompt_text, image_dir)
+
+def process_images(image_files, metadata, process_func, caption_key, prompt=None, image_dir="./images"):
+    """Generic function to process images with any model (backward compatibility)"""
+    if prompt is None:
+        prompt = DEFAULT_PROMPTS["describe"]
+
     # Process each image file
     for image_file in tqdm.tqdm(image_files):
         if image_file not in metadata:

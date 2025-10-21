@@ -1,7 +1,7 @@
 from transformers import AutoModel, AutoProcessor
 import torch
 from qwen_vl_utils import process_vision_info
-from utils import get_image_files, load_or_create_metadata, process_images
+from utils import get_image_files, load_or_create_metadata, process_images_with_prompts
 
 # model_id = "lmms-lab/LLaVA-OneVision-1.5-8B-Instruct"
 model_id = "lmms-lab/LLaVA-OneVision-1.5-4B-Instruct"
@@ -66,6 +66,5 @@ def process_image(image_path: str, prompt: str) -> str:
 if __name__ == "__main__":
     image_files = get_image_files("./images")
     metadata = load_or_create_metadata(image_files)
-    prompt = "does the image show a modern building? answer yes or no."
     
-    process_images(image_files, metadata, process_image, "llava_one_vision_caption", prompt, "./images")
+    process_images_with_prompts(image_files, metadata, process_image, "llava_one_vision", image_dir="./images")

@@ -1,6 +1,6 @@
 import openai
 import base64
-from utils import get_image_files, load_or_create_metadata, process_images
+from utils import get_image_files, load_or_create_metadata, process_images_with_prompts
 
 # model="o4-mini"
 # model="gpt-4o-mini"
@@ -56,6 +56,5 @@ def process_image(image_path: str, prompt: str) -> str:
 if __name__ == "__main__":
     image_files = get_image_files("./images")
     metadata = load_or_create_metadata(image_files)
-    prompt = "describe this image."
     
-    process_images(image_files, metadata, process_image, "gpt4o_caption", prompt, "./images")
+    process_images_with_prompts(image_files, metadata, process_image, "gpt5", image_dir="./images")
