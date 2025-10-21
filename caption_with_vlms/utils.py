@@ -2,17 +2,32 @@ import os
 import json
 import tqdm
 
-# Default prompts for different models
-DEFAULT_PROMPTS = {
-    "describe": "describe this image.",
-    "modern_building": "does the image show a modern building? answer yes or no."
-}
-
-# Default system prompts for different use cases
-DEFAULT_SYSTEM_PROMPTS = {
-    "architecture_detection": "You are an expert architectural analyst.",
-    "image_quality": "You are a professional image quality assessor for architectural images.",
-    "architect_description": "You are a professional architect tasked with analyzing and describing architectural images for expert reference and dataset enrichment."
+# Task configurations with system prompts and associated prompts
+TASKS = {
+    "architecture_detection": {
+        "system_prompt": "You are an expert architectural analyst.",
+        "prompts": {
+            "identify_style": "Identify the architectural style of this building.",
+            "detect_elements": "List the main architectural elements visible in this image.",
+            "classify_building": "What type of building is shown in this image?"
+        }
+    },
+    "image_quality": {
+        "system_prompt": "You are a professional image quality assessor for architectural images.",
+        "prompts": {
+            "assess_quality": "Assess the overall quality of this image.",
+            "check_composition": "Evaluate the composition and framing of this image.",
+            "analyze_lighting": "Analyze the lighting conditions in this image."
+        }
+    },
+    "architect_description": {
+        "system_prompt": "You are a professional architect tasked with analyzing and describing architectural images for expert reference and dataset enrichment.",
+        "prompts": {
+            "describe_professionally": "Provide a professional architectural description of this image.",
+            "analyze_materials": "Analyze the materials and construction techniques visible in this image.",
+            "evaluate_design": "Evaluate the design principles demonstrated in this architectural image."
+        }
+    }
 }
 
 def get_image_files(image_dir="./images"):
@@ -51,23 +66,25 @@ def save_metadata(metadata):
     with open(metadata_path, "w") as f:
         json.dump(metadata, f, indent=2)
 
-def process_images_with_prompts(image_files, metadata, process_func, model_name, image_dir="./images", system_prompt=None):
-    """Generic function to process images with any model using multiple prompts"""
-    prompts = DEFAULT_PROMPTS
-
-    # Process each prompt
-    for prompt_key, prompt_text in prompts.items():
-        caption_key = f"{model_name}_{prompt_key}_caption"
-        print(f"\nProcessing with prompt '{prompt_key}': {prompt_text}")
+def process_images_with_tasks(image_files, metadata, process_func, model_name, image_dir="./images"):
+    """Generic function to process images with any model using task-based prompts"""
+    tasks = TASKS
+    
+    # Process each task
+    for task_name, task_config in tasks.items():
+        system_prompt = task_config["system_prompt"]
+        prompts = task_config["prompts"]
         
-        # Create a wrapper function that adds prompt info to the output
-        # Use default parameter to capture prompt_key by value
-        def process_func_with_prompt_info(image_path, prompt, sys_prompt=system_prompt):
-            caption = process_func(image_path, prompt, sys_prompt)
-            return caption
+        print(f"\n=== Processing task: {task_name} ===")
+        print(f"System prompt: {system_prompt}")
         
-        # Use existing process_images function
-        process_images(image_files, metadata, process_func_with_prompt_info, caption_key, prompt_text, image_dir, system_prompt)
+        # Process each prompt within the task
+        for prompt_key, prompt_text in prompts.items():
+            caption_key = f"{model_name}_{task_name}_{prompt_key}_caption"
+            print(f"\nProcessing prompt '{prompt_key}': {prompt_text}")
+            
+            # Use existing process_images function
+            process_images(image_files, metadata, process_func, caption_key, prompt_text, image_dir, system_prompt)
 
 def process_images(image_files, metadata, process_func, caption_key, prompt, image_dir="./images", system_prompt=None):
     # Process each image file
