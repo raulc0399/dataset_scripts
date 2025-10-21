@@ -1,7 +1,7 @@
 from transformers import AutoModel, AutoProcessor
 from PIL import Image
 import torch
-from utils import get_image_files, load_or_create_metadata, process_images_with_prompts
+from utils import get_image_files, load_or_create_metadata, process_images_with_tasks
 
 model_id = "YannQi/R-4B"
 
@@ -70,8 +70,6 @@ def process_image(image_path: str, prompt: str, system_prompt: str = None) -> st
     return output_text.strip()
 
 if __name__ == "__main__":
-    from utils import process_images_with_tasks
-    
     image_files = get_image_files("./images")
     metadata = load_or_create_metadata(image_files)
     

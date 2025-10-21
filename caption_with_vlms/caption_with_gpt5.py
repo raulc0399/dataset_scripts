@@ -1,6 +1,6 @@
 import openai
 import base64
-from utils import get_image_files, load_or_create_metadata, process_images_with_prompts
+from utils import get_image_files, load_or_create_metadata, process_images_with_tasks
 
 # model="o4-mini"
 # model="gpt-4o-mini"
@@ -61,8 +61,6 @@ def process_image(image_path: str, prompt: str, system_prompt: str = None) -> st
         return ""
 
 if __name__ == "__main__":
-    from utils import process_images_with_tasks
-    
     image_files = get_image_files("./images")
     metadata = load_or_create_metadata(image_files)
     

@@ -1,6 +1,6 @@
 from transformers import Qwen3VLForConditionalGeneration, AutoProcessor
 import torch
-from utils import get_image_files, load_or_create_metadata, process_images_with_prompts
+from utils import get_image_files, load_or_create_metadata, process_images_with_tasks
 
 model_id = "Qwen/Qwen3-VL-8B-Instruct"
 # model_id = "Qwen/Qwen3-VL-8B-Thinking"
@@ -61,8 +61,6 @@ def process_image(image_path: str, prompt: str, system_prompt: str = None) -> st
     return output_text[0].strip() if output_text else ""
 
 if __name__ == "__main__":
-    from utils import process_images_with_tasks
-    
     image_files = get_image_files("./images")
     metadata = load_or_create_metadata(image_files)
     
