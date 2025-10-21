@@ -7,20 +7,33 @@ TASKS = {
     "architecture_detection": {
         "system_prompt": "You are an expert architectural analyst.",
         "prompts": {
-            "p1": "Determine if the given image **depicts architecture (a building, structure, architectural feature)** Please answer with \"Yes\" or \"No\". Then briefly justify your answer (1–2 sentences).",
-            "p2": "Rate from 0-10 how related this image is to architecture (buildings, structural design, interior spaces, architectural elements).",
+            "p1": ("Determine if the given image **depicts architecture (a building, structure, architectural feature)** "
+                   "Please answer with \"Yes\" or \"No\". Then briefly justify your answer (1–2 sentences)."),
+            "p2": ("Rate from 0-10 how related this image is to architecture (buildings, structural design, interior spaces, architectural elements)."),
         }
     },
     "image_quality": {
         "system_prompt": "You are a professional image quality assessor for architectural images.",
         "prompts": {
-            "assess_quality": "Assess the overall quality of this image.",
-            "check_composition": "Evaluate the composition and framing of this image.",
-            "analyze_lighting": "Analyze the lighting conditions in this image."
+            "p1": ("Evaluate the following image for clarity, sharpness, and absence of major defects (blur, noise, distortions). "
+                   "Please answer the question: \"Is the image quality good (clear, sharp, minimal defects)?\" with \"Yes\" or \"No\". "
+                   "Then provide a brief explanation to justify the assessment (1–2 sentences)."),
+
+            "p2": ("Should this image be excluded due to:\n"
+                   "- Severe blur\n"
+                   "- Very low resolution\n"
+                   "- Heavy distortion\n"
+                   "- Extreme over/underexposure\n"
+                   "Answer: Keep or Reject"),
+
+            "p3": ("For an architecture dataset, is this image usable? "
+                   "Check: architectural details are visible, image is sharp, lighting allows clear viewing, no major blur or distortion. "
+                   "Rate: excellent/good/poor.")
         }
     },
     "architect_description": {
-        "system_prompt": "You are a professional architect tasked with analyzing and describing architectural images for expert reference and dataset enrichment.",
+        "system_prompt": ("You are a professional architect tasked with analyzing and describing architectural images "
+                         "for expert reference and dataset enrichment."),
         "prompts": {
             "describe_professionally": "Provide a professional architectural description of this image.",
             "analyze_materials": "Analyze the materials and construction techniques visible in this image.",
