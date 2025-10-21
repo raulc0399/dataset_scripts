@@ -15,20 +15,27 @@ model = Qwen3VLForConditionalGeneration.from_pretrained(
 # Load processor
 processor = AutoProcessor.from_pretrained(model_id)
 
-def process_image(image_path: str, prompt: str) -> str:
+def process_image(image_path: str, prompt: str, system_prompt: str = None) -> str:
     # Define conversation messages
-    messages = [
-        {
-            "role": "user",
-            "content": [
-                {
-                    "type": "image",
-                    "image": image_path,
-                },
-                {"type": "text", "text": prompt},
-            ],
-        }
-    ]
+    messages = []
+    
+    # Add system message if provided
+    if system_prompt:
+        messages.append({
+            "role": "system",
+            "content": system_prompt
+        })
+    
+    messages.append({
+        "role": "user",
+        "content": [
+            {
+                "type": "image",
+                "image": image_path,
+            },
+            {"type": "text", "text": prompt},
+        ],
+    })
 
     inputs = processor.apply_chat_template(
         messages,
@@ -54,7 +61,9 @@ def process_image(image_path: str, prompt: str) -> str:
     return output_text[0].strip() if output_text else ""
 
 if __name__ == "__main__":
+    from utils import process_images_with_tasks
+    
     image_files = get_image_files("./images")
     metadata = load_or_create_metadata(image_files)
     
-    process_images_with_prompts(image_files, metadata, process_image, "qwen3_vl", image_dir="./images")
+    process_images_with_tasks(image_files, metadata, process_image, "qwen3_vl", image_dir="./images")
