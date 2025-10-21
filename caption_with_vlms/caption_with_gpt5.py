@@ -15,28 +15,35 @@ def encode_image_to_base64(image_path: str) -> str:
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-def process_image(image_path: str, prompt: str) -> str:
+def process_image(image_path: str, prompt: str, system_prompt: str = None) -> str:
     # Encode image to base64
     base64_image = encode_image_to_base64(image_path)
     
-    messages = [
-        {
-            "role": "user",
-            "content": [
-                {
-                    "type": "text",
-                    "text": prompt
-                },
-                {
-                    "type": "image_url",
-                    "image_url": {
-                        "url": f"data:image/jpeg;base64,{base64_image}",
-                        "detail": "high"
-                    }
+    messages = []
+    
+    # Add system message if provided
+    if system_prompt:
+        messages.append({
+            "role": "system",
+            "content": system_prompt
+        })
+    
+    messages.append({
+        "role": "user",
+        "content": [
+            {
+                "type": "text",
+                "text": prompt
+            },
+            {
+                "type": "image_url",
+                "image_url": {
+                    "url": f"data:image/jpeg;base64,{base64_image}",
+                    "detail": "high"
                 }
-            ]
-        }
-    ]
+            }
+        ]
+    })
 
     try:
         response = client.chat.completions.create(
@@ -54,7 +61,9 @@ def process_image(image_path: str, prompt: str) -> str:
         return ""
 
 if __name__ == "__main__":
+    from utils import process_images_with_tasks
+    
     image_files = get_image_files("./images")
     metadata = load_or_create_metadata(image_files)
     
-    process_images_with_prompts(image_files, metadata, process_image, "gpt5", image_dir="./images")
+    process_images_with_tasks(image_files, metadata, process_image, "gpt5", image_dir="./images")
